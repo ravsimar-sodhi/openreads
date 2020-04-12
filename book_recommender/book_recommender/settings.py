@@ -52,6 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'book_recommender.urls'
+LOGIN_REDIRECT_URL = ('/user/account')
+
 
 TEMPLATES = [
     {

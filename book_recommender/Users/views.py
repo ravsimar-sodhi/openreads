@@ -7,6 +7,7 @@ from Users.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView, LogoutView
 from Users.models import *
 
 def register(request):
@@ -27,11 +28,8 @@ def register(request):
 def view_profile(request):
     userName = {'user':request.user}
     UserRateList=rateList.objects.filter(user=request.user)
-    UserReadList=readList.objects.filter(user=request.user)
-    UserWishList=wishList.objects.filter(user=request.user)
-    UserFollowList=followList.objects.filter(user=request.user)
     print (UserRateList)
-    return render(request, 'users/account.html', {'UserRateList':UserRateList, 'UserReadList':UserReadList, 'UserWishList':UserWishList, 'UserFollowList':UserFollowList})
+    return render(request, 'users/account.html', {'UserRateList':UserRateList})
 @login_required
 def edit_profile(request):
     if request.method == "POST":
@@ -49,3 +47,9 @@ def edit_profile(request):
 def logout(request):
     logout(request)
     return redirect('/users/login')
+
+def custom_login(request):
+    if request.user.is_authenticated:
+        return redirect('/books/')
+    else:
+        return LoginView.as_view(template_name='./users/login.html')(request)

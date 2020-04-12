@@ -5,5 +5,10 @@ register = template.Library()
 def indx(indexable, i):
     return indexable[i]
 
-def incr(i, j):
-    return i+j
+@register.filter
+def times(count):
+    return range(int(count))
+
+@register.filter
+def negate(value):
+    return -value
