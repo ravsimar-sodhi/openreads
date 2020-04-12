@@ -15,24 +15,26 @@ from django.shortcuts import render
 # Create your views here.
 def details(request,id):
     request.session['book_id'] = id
-    book = Books.objects.get(id=id)
+    book = Book.objects.get(id=id)
+    bookCategories = []
     if book.book_genre:
-        categories = book.book_genre.all()
+        for category in book.book_genre.all():
+            bookCategories.append(category.name) 
     return render(request,"detail.html",
-    {"book":book, "categories":categories});
+    {"book":book, "categories":bookCategories});
 
-# def search(request):
-#     text_search = request.GET.get("in")
-#     book_list = Books.objects.filter(book_title__icontains= text_search)
-#     # author=Book.objects.filter(Author_Name__icontains=text_search)
-#     return render(request,'search.html',
-#     {'book_list':book_list})
+def search(request):
+    text_search = request.GET.get("in")
+    book_list = Book.objects.filter(book_title__icontains= text_search)
+    # author=Book.objects.filter(Author_Name__icontains=text_search)
+    return render(request,'search.html',
+    {'book_list':book_list})
 
 # AJAX
 def userRateList(request):
     stars = request.GET.get('stars')
     bookID = request.GET.get('bookID')
-    bookTitle= Books.objects.get(id=bookID).book_title
+    bookTitle= Book.objects.get(id=bookID).book_title
     print(bookTitle)
     checkExistedRatings= rateList.objects.filter(user= request.user, book_id = bookID)
     if len(checkExistedRatings)==0:
@@ -50,11 +52,11 @@ def userRateList(request):
         }
         return JsonResponse(data)
 
-        
+
 def allBooks(request):
-    books = Books.objects.all()
+    books = Book.objects.all()
     booksList=[]
-    for book in Books.objects.all():
+    for book in Book.objects.all():
         booksList.append(book)
     print(booksList)
     indexList = []

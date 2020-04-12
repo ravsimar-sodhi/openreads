@@ -83,11 +83,14 @@
         <h1 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace' ">{{  book.book_title }}</h1>
     
         <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Written by :{{ book.book_author }}</h3>
+        <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Published on:{{ book.published_at }}</h3>
+
         {% if categories %}
         <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Genres: {{ categories }} </h3>
         {% endif %}
+        {% if book.book_description %}
         <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Overview: {{ book.book_description }}</h3>
-   
+        {% endif %}
     
 <p id="book_id" book_id="{{book.id}}" style="display:none">
 <h1 style = "font-family: 'satisfy'; color: #000000;">Rate this book:</h1>

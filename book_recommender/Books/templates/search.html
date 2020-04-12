@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+      .bgimg {
+            background-color:rgb(194, 174, 182);
+  height: auto;
+  width: 45%;
+  font-family: 'satisfy';      }
+      </style>
+
+
+  <div class="bgimg">
+
+
+
+      <h1 style= "font-size: 45px; color: #2b5b81; font-family: 'satisfy'">Search results in books:</h1>
+
+       {% if book_list %}
+            {% for book in book_list %}
+            <div id = SearchBlock>
+                    <img src = "{{ book.book_cover }}" width="150" height="150">
+                    <a  style= "font-size: 45px; color: #2b5b81;" href = "/books/{{ book.id }}/" > {{book.book_title}} </a>
+            </div>
+            <br>
+            <br>
+            {% endfor %}
+      {% else %}
+                <h6 style= "font-size: 45px; color: #2b5b81; font-family: 'satisfy'">There are no books match your search key</h6>
+      {% endif %}
+
+      <br>
+   </div>
+{% endblock %}

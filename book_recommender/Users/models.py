@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 class rateList(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    book=models.ForeignKey('Books.Books',on_delete=models.CASCADE)
+    book=models.ForeignKey('Books.Book',on_delete=models.CASCADE)
     Choices = (
         (1,  '*'),
         (2,  '**'),
