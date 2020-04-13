@@ -15,7 +15,7 @@
                 <h2 style="color:orange">Login</h2>
                 <br>
                 <form id="newUser" method="post" style="color:orange;" >
-                    {% for field in form %}
+                   {% for field in form %}
                         {% csrf_token %}
                     <p>{{ field.label_tag}}<font style="color:black;">{{ field}}</font></p>
                         {% endfor %}
