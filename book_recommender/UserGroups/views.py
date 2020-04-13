@@ -23,7 +23,8 @@ def create(request):
     args = {'form': form}
     return render(request, 'groups/group_creation.html', args)
 def details(request, id):
-    groupMember = GroupMember.objects.filter(user=request.user,group=UserGroup.objects.filter(id=id))
+    group = UserGroup.objects.filter(id=id).all()[0]
+    groupMember = GroupMember.objects.filter(user=request.user,group=group)
     groupBooks = (UserGroup.objects.filter(id=id))[0].group_books.all()
     allBooks = Book.objects.all()
     otherBooks = set(allBooks).difference(set(groupBooks))
@@ -31,7 +32,7 @@ def details(request, id):
     groupMessages = Message.objects.filter(group_id=id)
     myGroups = GroupMember.objects.filter(user=request.user)
     allGroups = GroupMember.objects.exclude(user=request.user)
-    group = UserGroup.objects.filter(id=id)
+    
     args = {'groupMember':groupMember,
             'groupBooks':groupBooks,
                 'otherBooks':otherBooks,
@@ -40,4 +41,15 @@ def details(request, id):
                 'allGroups':allGroups,
                 'group':group}
     return render(request, 'groups/groupInfo.html', args)
+
+def addBookToGroup(request, bid, gid):
+    book = Book.objects.get(id = bid)
+    group = UserGroup.objects.get(id = gid)
+    group.group_books.add(book)
+    genres = group.group_genre.all()
+    for genre in book.book_genre.all():
+        if genre not in genres:
+            group.group_genre.add(genre)
+    return redirect("/group/"+str(gid))
+
 
