@@ -58,9 +58,8 @@
                                         {% if group.group.group_pic %}
                                     <img src="{{ group.group.group_pic.url }}" height="30" width="30">
                                     {% else %}
-                                    <img src="media/default.jpg">
-                                    {% endif %}
-                                        {{ group.group.group_name }}
+                                    <img src="media/default.jpg" height="30" width="30">
+                                    {% endif %}{{ group.group.group_name }}
                                     </li>
                                 </a>
                             </ul>
@@ -81,7 +80,7 @@
                                             {% if group.group.group_pic %}
                                             <img src="{{ group.group.group_pic.url }}"  height="30" width="30">
                                             {% else %}
-                                            <img src="media/default.jpg">
+                                            <img src="media/default.jpg" height="30" width="30">
                                             {% endif %}{{ group.group.group_name }}
                                         </li>
                                     </a>
