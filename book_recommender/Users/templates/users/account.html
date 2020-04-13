@@ -1,0 +1,58 @@
+<body style="background-image: url('/media/3.jpeg') ; background-size:cover; ">
+    
+    {% extends "base.html" %}
+    {% load poll_extras %}
+    {% block content %}
+    
+            <div style="margin:0 auto; text-align: center;">
+                <div style="margin:0 auto; text-align: center;">
+                    <h1 style= "text-align: center;color: black; font-family: 'Lobster';
+                            font-size: 40px">Welcome {{ request.user }}</h1>
+                            <br>
+                    <div style="left: 350px;padding: 0;margin: 0;">
+                    <div class ="left-element scrollable" style="background-color:#e1e1d0; height:75%;width:500px;margin:0 auto;padding-bottom: 10px;">
+                            <!--<a href="/books">Browse all books </a>-->
+                            <h1 style= "font-size: 30px; color: #2b5b81;">Your recently rated books:</h1><br>
+                        
+                            {% for rate in UserRateList %}
+                        <div class="row" style="padding-bottom: 20px;"><a href ="/books/{{ rate.book.id }}/" ><div class="col-sm-6 col-md-offset-3"><div class="box" style="text-align: center;margin:0 auto;"> <img class="card-img-top" src="{{ rate.book.book_cover }}" alt=""><br>
+                                <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ rate.book }}</font>
+                        </br>
+                                {% with stars=rate.rate %}
+                                {% for i in stars|times %}
+                                    <span class="fa fa-star checked"></span>
+                                {% endfor %}
+                                {% with j=stars|negate|add:5 %}
+                                {% for i in j|times %}
+                                    <span class="fa fa-star"></span>
+                                {% endfor %}
+                                {% endwith %}
+                                {% endwith %}
+                                   
+                            </div></div></a></div>
+                            {% endfor %}
+                                <br><br>
+                    </div>
+                    {% if Groups %}
+                    <div class="right-element scrollable">
+                        <div class="class1" style="height:50px;width:100%;">
+                            <h3>Your groups</h3>
+                        </div>
+                        
+                            {% for group in Groups %}
+                            <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
+                                <a href="/group/{{ group.group.id }}"><li>{{ group.group.group_name }}</li></a>
+                            </ul>
+                            {% endfor %}
+                        
+                    </div>
+                    {% endif %}
+                    </div>
+
+                    </div></div>
+                    
+                    
+    
+    
+    {% endblock %}
+    
