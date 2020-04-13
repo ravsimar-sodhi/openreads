@@ -26,15 +26,15 @@ def details(request, id):
     groupMember = GroupMember.objects.filter(user=request.user,group=UserGroup.objects.filter(id=id))
     groupBooks = (UserGroup.objects.filter(id=id))[0].group_books.all()
     allBooks = Book.objects.all()
-    for book in groupBooks:
-        allBooks.remove(book)
+    otherBooks = set(allBooks).difference(set(groupBooks))
+    
     groupMessages = Message.objects.filter(group_id=id)
     myGroups = GroupMember.objects.filter(user=request.user)
-    allGroups = GroupMember.objects.all()
+    allGroups = GroupMember.objects.exclude(user=request.user)
     group = UserGroup.objects.filter(id=id)
     args = {'groupMember':groupMember,
             'groupBooks':groupBooks,
-                'otherBooks':allBooks,
+                'otherBooks':otherBooks,
                 'groupMessages':groupMessages,
                 'myGroups':myGroups,
                 'allGroups':allGroups,
