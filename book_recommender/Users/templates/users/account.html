@@ -33,18 +33,47 @@
                             {% endfor %}
                                 <br><br>
                     </div>
-                    {% if Groups %}
-                    <div class="right-element scrollable">
-                        <div class="class1" style="height:50px;width:100%;">
+                    {% if myGroups %}
+                    <div class="right-element">
+                        <div class="scrollable" >
+                        <div class="class1" style="height:50px;">
                             <h3>Your groups</h3>
                         </div>
                         
-                            {% for group in Groups %}
+                            {% for group in myGroups %}
                             <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
-                                <a href="/group/{{ group.group.id }}"><li>{{ group.group.group_name }}</li></a>
+                                <a href="/group/{{ group.group.id }}">
+                                    {% if group.group.group_pic %}
+                                    <img src="{{ group.group.group_pic }}">
+                                    {% else %}
+                                    <img src="media/default.jpg">
+                                    {% endif %}
+                                    <li>{{ group.group.group_name }}</li>
+                                </a>
                             </ul>
                             {% endfor %}
                         
+                        </div>
+                    </br>
+                        <div class="scrollable">
+                            <div class="class1" style="height:50px;">
+                                <h3>All other groups</h3>
+                            </div>
+                            
+                                {% for group in otherGroups %}
+                                <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
+                                    <a href="/group/{{ group.group.id }}">
+                                        {% if group.group.group_pic %}
+                                    <img src="{{ group.group.group_pic }}">
+                                    {% else %}
+                                    <img src="media/default.jpg">
+                                    {% endif %}
+                                        <li>{{ group.group.group_name }}</li>
+                                    </a>
+                                </ul>
+                                {% endfor %}
+                            
+                        </div>
                     </div>
                     {% endif %}
                     </div>
