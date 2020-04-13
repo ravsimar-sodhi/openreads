@@ -41,6 +41,36 @@
             .checked {
                 color: rgb(0, 126, 52);
             }
+
+            .left-element {
+                background: green;
+                display: inline-block;
+                position: absolute;
+                left: 200px;
+                
+            }
+
+            .right-element {
+                display: inline-block;
+                position: absolute;
+                right:0px;
+                width:200px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;  
+                border-bottom-left-radius: 5px;
+                border: 1px solid rgb(225, 233, 229);
+                background: rgb(252, 255, 254);
+                text-align: left;
+                height:75%;
+                
+            }
+            .class1{
+                font-family: sans-serif;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;border: 1px solid rgb(225, 233, 229);
+            }
+            .scrollable {
+                overflow-y: auto;
+            }
     </style>
 </head>
 <body style ="background: url('/media/stack-of-books-vintage-books-book-books.jpg'); background-repeat: no-repeate; ">
@@ -77,6 +107,7 @@
               {% endblock%}>
               </li>
               {% endif %}
+              <li><a href="/group/create">Create Group</a></li>
               <li><a href="/user/account">Profile</a></li>
               <li ><a href="/user/logout">Logout</a></li>
                {% else %}

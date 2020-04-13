@@ -9,7 +9,8 @@
                     <h1 style= "text-align: center;color: black; font-family: 'Lobster';
                             font-size: 40px">Welcome {{ request.user }}</h1>
                             <br>
-                    <div style="background-color:#e1e1d0; width:500px;margin:0 auto;">
+                    <div style="left: 350px;padding: 0;margin: 0;">
+                    <div class ="left-element scrollable" style="background-color:#e1e1d0; height:75%;width:500px;margin:0 auto;padding-bottom: 10px;">
                             <!--<a href="/books">Browse all books </a>-->
                             <h1 style= "font-size: 30px; color: #2b5b81;">Your recently rated books:</h1><br>
                         
@@ -32,6 +33,22 @@
                             {% endfor %}
                                 <br><br>
                     </div>
+                    {% if Groups %}
+                    <div class="right-element scrollable">
+                        <div class="class1" style="height:50px;width:100%;">
+                            <h3>Your groups</h3>
+                        </div>
+                        
+                            {% for group in Groups %}
+                            <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
+                                <a href="/group/{{ group.group.id }}"><li>{{ group.group.group_name }}</li></a>
+                            </ul>
+                            {% endfor %}
+                        
+                    </div>
+                    {% endif %}
+                    </div>
+
                     </div></div>
                     
                     

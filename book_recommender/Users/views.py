@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from Users.models import *
+from UserGroups.models import *
 
 def register(request):
     print("222")
@@ -29,7 +30,9 @@ def view_profile(request):
     userName = {'user':request.user}
     UserRateList=rateList.objects.filter(user=request.user)
     print (UserRateList)
-    return render(request, 'users/account.html', {'UserRateList':UserRateList})
+    groups = GroupMember.objects.filter(user=request.user)
+    print(groups)
+    return render(request, 'users/account.html', {'UserRateList':UserRateList, 'Groups':groups})
 @login_required
 def edit_profile(request):
     if request.method == "POST":

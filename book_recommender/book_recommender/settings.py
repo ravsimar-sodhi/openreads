@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Users',
-    'Books'
+    'Books',
+    'UserGroups'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,7 @@ LOGIN_REDIRECT_URL = ('/user/account')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["book_recommender/Users/templates/users/login.html", "book_recommender/Users/templates/users/account.html", "book_recommender/Users/templates/users/account_edit.html", "book_recommender/Users/templates/users/account.html", "book_recommender/Users/templates/users/reg_form.html", "book_recommender/Books/templates/index.html"],
+        'DIRS': ["book_recommender/UserGroups/templates/groups/group_creation.html", "book_recommender/Users/templates/users/login.html", "book_recommender/Users/templates/users/account.html", "book_recommender/Users/templates/users/account_edit.html", "book_recommender/Users/templates/users/account.html", "book_recommender/Users/templates/users/reg_form.html", "book_recommender/Books/templates/index.html"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

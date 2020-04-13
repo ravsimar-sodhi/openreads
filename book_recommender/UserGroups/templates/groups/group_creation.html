@@ -3,16 +3,16 @@
     {% block content %}
 <body style="background-image: url('/media/profile_image/stack-of-books-vintage-books-book-books.jpg') ; background-size: 100%; ">
     <div class="container">
-        <h1>Welcome</h1>
+        <h1>Welcome {{request.user}}</h1>
         <p>
-            You can Register in here!
+            You can create Group in here!
         </p>
-        <div class="container-fluid" style="width:400px;height:600px;text-align:center;background-color:black;margin-bottom:20px ;opacity:0.7">
+        <div class="container-fluid" style="width:500px;height:600px;text-align:center;background-color:black;margin-bottom:20px ;opacity:0.7">
             <div class="row" >
                 <div class="col-md-12" >
-                    <h2 style="color:orange">Register</h2>
+                    <h4 style="color:orange">Fill in group details:</h4>
                     <br/>
-                    <form method="post" style="color:orange;margin-left:60px;margin-top:20px;" class="col-md-8">
+                    <form method="post" style="color:orange;margin-left:60px;margin-top:20px;text-align: center;" class="col-md-8" enctype="multipart/form-data">
                         {% for field in form %}
                         {% csrf_token %}
                         {{ field.label_tag}}<p style="color:black;">{{field}}</p>

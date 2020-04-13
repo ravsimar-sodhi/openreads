@@ -36,5 +36,5 @@ urlpatterns = [
     path('user/', include('Users.urls')),
     path('admin/', admin.site.urls),
     path('books/', include('Books.urls')),
-    # path('authors/',include('Authors.urls')),
+    path('group/',include('UserGroups.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
