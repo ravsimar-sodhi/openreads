@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.db.models.signals import post_save
 
+class GroupMember(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    group = models.ForeignKey('UserGroups.UserGroup',on_delete=models.CASCADE)
+
 class rateList(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     book=models.ForeignKey('Books.Book',on_delete=models.CASCADE)

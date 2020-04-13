@@ -1,0 +1,83 @@
+<body style="background-image: url('/media/3.jpeg') ; background-size:cover; ">
+    
+    {% extends "base.html" %}
+    {% load poll_extras %}
+    {% block content %}
+    
+            <div style="margin:0 auto; text-align: center;">
+                <div style="margin:0 auto; text-align: center;">
+                            <br>
+                    <div>
+                        
+                    <div class ="left-element scrollable" style="background-color:#e1e1d0;left:0; height:80%;width:400px;margin:0 auto;padding-bottom: 10px;">
+                            <!--<a href="/books">Browse all books </a>-->
+                            {% if groupBooks %}
+                                <div class="row scrollable">
+                                <h1 style= "font-size: 30px; color: #2b5b81;">Bookshelf of {{ group.group_name }}</h1><br>
+                            
+                                {% for book in groupBooks %}
+                            <div class="row" style="padding-bottom: 20px;"><a href ="/books/{{ book.id }}/" ><div class="col-sm-4 col-md-offset-4"><div class="box" style="text-align: center;margin:0 auto;"> <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
+                                    <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font><i class="fas fa-plus-square"></i>
+                            </br>
+                                    
+                                </div></div></a></div>
+                                {% endfor %}
+                                <br></div>
+                            {% endif %}
+
+                                {% if otherBooks %}
+                                <div class="row scrollable">
+                                    <h1 style= "font-size: 30px; color: #2b5b81;">Other books:</h1><br>
+                                
+                                    {% for book in otherBooks %}
+                                <div class="row" style="padding-bottom: 20px;"><a href ="/books/{{ book.id }}/" ><div class="col-sm-4 col-md-offset-4"><div class="box" style="text-align: center;margin:0 auto;"> <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
+                                        <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font><i class="fas fa-plus-square"></i>
+                                </br>
+                                           
+                                    </div></div></a></div>
+                                    {% endfor %}
+                                        <br></div>
+                                {% endif %}
+                    </div>
+                    
+
+                    
+
+                    {% if myGroups %}
+                    <div class="right-element">
+                        <div class="scrollable" >
+                        <div class="class1" style="height:50px;">
+                            <h3>Your groups</h3>
+                        </div>
+                        
+                            {% for group in myGroups %}
+                            <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
+                                <a href="/group/{{ group.group.id }}"><li>{{ group.group.group_name }}</li></a>
+                            </ul>
+                            {% endfor %}
+                        
+                        </div>
+                    </br>
+                        <div class="scrollable">
+                            <div class="class1" style="height:50px;">
+                                <h3>All groups</h3>
+                            </div>
+                            
+                                {% for group in allGroups %}
+                                <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:30px;padding-top: 10px;">
+                                    <a href="/group/{{ group.group.id }}"><li>{{ group.group.group_name }}</li></a>
+                                </ul>
+                                {% endfor %}
+                            
+                        </div>
+                    </div>
+                    {% endif %}
+                    </div>
+
+                    </div></div>
+                    
+                    
+    
+    
+    {% endblock %}
+    
