@@ -31,7 +31,7 @@ def view_profile(request):
     UserRateList=rateList.objects.filter(user=request.user)
     print (UserRateList)
     myGroups = GroupMember.objects.filter(user=request.user)
-    otherGroups = GroupMember.objects.exclude(user=request.user)
+    otherGroups = set(GroupMember.objects.all()).difference(set(GroupMember.objects.filter(user=request.user)))
     return render(request, 'users/account.html', {'UserRateList':UserRateList, 'myGroups':myGroups, 'otherGroups':otherGroups})
 @login_required
 def edit_profile(request):
