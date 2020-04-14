@@ -32,7 +32,7 @@ from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     # path('', views.index, name ='index'),
-    path('', LoginView.as_view(template_name='./users/login.html')),
+    path('', views.custom_login),
     path('user/', include('Users.urls')),
     path('admin/', admin.site.urls),
     path('books/', include('Books.urls')),
