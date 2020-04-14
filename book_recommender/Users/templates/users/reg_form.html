@@ -13,6 +13,9 @@
                     <h2 style="color:orange">Register</h2>
                     <br/>
                     <form method="post" style="color:orange;margin-left:60px;margin-top:20px;" class="col-md-8">
+                         {{ form.username.errors }}
+                        {{ form.email.errors }}
+                        {{ form.non_field_errors }}
                         {% for field in form %}
                         {% csrf_token %}
                         {{ field.label_tag}}<p style="color:black;">{{field}}</p>
