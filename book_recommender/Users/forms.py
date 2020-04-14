@@ -3,6 +3,43 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
+from Users.models import *
+
+
+class AddShelfForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+         self.user = kwargs.pop('user',None)
+         super(AddShelfForm, self).__init__(*args, **kwargs)
+    name = forms.CharField(label="Shelf Name",min_length=4, max_length=256)
+    class Meta:
+        model = Bookshelf
+        
+        fields = (
+            'name'
+        )
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        try:
+            shelf = Bookshelf.objects.get(name=name, user=self.user)
+        except Bookshelf.DoesNotExist:
+            return name
+        print(name)
+        raise forms.ValidationError('Shelf %s already exists'%name)
+    
+    def save(self, commit=True):
+        # user = super(RegistrationForm, self).save(commit=False)
+        # user.first_name = self.cleaned_data['first_name']
+        # user.last_name = self.cleaned_data['last_name']
+        # user.email = self.cleaned_data['email']
+
+        if commit:
+            shelf = Bookshelf.objects.create(
+            name = self.cleaned_data['name'],
+            user = self.user
+            
+        )
+
 
 
 class RegistrationForm(forms.Form):

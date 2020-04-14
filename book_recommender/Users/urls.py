@@ -9,5 +9,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/')),
     path('register/', views.register, name="register"),
     path('account/', views.view_profile, name = "view_profile"),
-    path('account/edit',views.edit_profile, name = "edit_profile")
+    path('account/edit',views.edit_profile, name = "edit_profile"),
+    path('createShelf/', views.addShelf, name="createShelf"),
+    path('shelves/', views.myShelves, name="shelves"),
+    re_path(r'(?P<sid>[0-9]+)/shelf/$', views.myShelf, name="shelf"),
+    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToShelf")
 ]
