@@ -9,10 +9,10 @@
                             <br>
                     <div>
                         
-                    <div class ="left-element scrollable" style="background-color:#e1e1d0;left:0; height:80%;width:400px;margin:0 auto;padding-bottom: 10px;">
+                    <div class ="left-element" style="background-color:#e1e1d0;left:0; height:90%;width:400px;margin:0 auto;padding-bottom: 10px;">
                             <!--<a href="/books">Browse all books </a>-->
                             {% if groupBooks %}
-                                <div class="row scrollable">
+                                <div class="row scrollable" style="max-height: 50%;">
                                 <h1 style= "font-size: 30px; color: #2b5b81;">Bookshelf of {{ group.group_name }}</h1><br>
                             
                                 {% for book in groupBooks %}
@@ -22,11 +22,11 @@
                                     
                                 </div></div></a></div>
                                 {% endfor %}
-                                <br></div>
+                                </div>
                             {% endif %}
-
+                                <br><br>
                                 {% if otherBooks %}
-                                <div class="row scrollable">
+                                <div class="row scrollable" style="max-height: 50%;">
                                     <h1 style= "font-size: 30px; color: #2b5b81;">Other books:</h1><br>
                                 
                                     {% for book in otherBooks %}
