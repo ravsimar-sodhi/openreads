@@ -31,7 +31,7 @@
                                 
                                     {% for book in otherBooks %}
                                 <div class="row" style="padding-bottom: 20px;"><a href ="/books/{{ book.id }}/" ><div class="col-sm-4 col-md-offset-4"><div class="box" style="text-align: center;margin:0 auto;"> <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
-                                        <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font>{% if groupMember %}<a href="{% url 'addBookToGroup' bid=book.id gid=group.id %}"><i class="fa fa-plus-square"> ADD</i></a>{% endif %}
+                                        <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font>{% if not join %}<a href="{% url 'addBookToGroup' bid=book.id gid=group.id %}"><i class="fa fa-plus-square"> ADD</i></a>{% endif %}
                                 </br>
                                            
                                     </div></div></a></div>
