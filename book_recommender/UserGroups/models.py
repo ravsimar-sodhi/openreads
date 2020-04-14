@@ -21,12 +21,13 @@ class Message(models.Model):
         return  self.message_text
 
 class UserGroup(models.Model):
-    group_name = models.CharField(max_length = 200)
-    group_description = models.TextField(blank = True)
+    group_name = models.CharField(max_length=200)
+    group_description = models.TextField(blank=True)
     group_pic = models.ImageField(upload_to=get_image_path, blank=True, null=True)
-    group_genre = models.ManyToManyField(Genre, blank = True)
-    group_creator = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    group_books = models.ManyToManyField(Book, blank = True)
+    group_genre = models.ManyToManyField(Genre, blank=True)
+    group_creator = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
+    group_books = models.ManyToManyField(Book, blank=True)
+    group_members = models.ManyToManyField(User, related_name='my_groups', blank=True)
     # group_user = models.ManyToManyField(settings.AUTH_USER_MODEL)
     # book_title = models.CharField(max_length = 1000)
     # book_publisher = models.CharField(max_length = 1000, blank = True)

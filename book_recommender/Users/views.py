@@ -30,9 +30,12 @@ def view_profile(request):
     userName = {'user':request.user}
     UserRateList=rateList.objects.filter(user=request.user)
     print (UserRateList)
-    myGroups = GroupMember.objects.filter(user=request.user)
-    otherGroups = set(GroupMember.objects.all()).difference(set(GroupMember.objects.filter(user=request.user)))
+    # myGroups = None
+    # otherGroups = None
+    myGroups = request.user.my_groups.all()
+    otherGroups = set(UserGroup.objects.all()).difference(set(myGroups))
     return render(request, 'users/account.html', {'UserRateList':UserRateList, 'myGroups':myGroups, 'otherGroups':otherGroups})
+
 @login_required
 def edit_profile(request):
     if request.method == "POST":

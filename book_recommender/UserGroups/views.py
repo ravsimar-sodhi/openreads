@@ -22,24 +22,41 @@ def create(request):
         form = GroupCreationForm()
     args = {'form': form}
     return render(request, 'groups/group_creation.html', args)
+
+def join_group(request, id):
+    print("ok")
+    if request.method == 'POST':
+        print("yo")
+        print(id)
+        group = UserGroup.objects.filter(id=id).all()[0]
+        group.group_members.add(request.user)
+
+    return redirect('/')
+
+
 def details(request, id):
     group = UserGroup.objects.filter(id=id).all()[0]
-    groupMember = GroupMember.objects.filter(user=request.user,group=group)
+    # groupMember = GroupMember.objects.filter(user=request.user,group=group)
+    groupMember= group.group_members.all()
+    # print(groupMember)
     groupBooks = (UserGroup.objects.filter(id=id))[0].group_books.all()
     allBooks = Book.objects.all()
     otherBooks = set(allBooks).difference(set(groupBooks))
-    
     groupMessages = Message.objects.filter(group_id=id)
-    myGroups = GroupMember.objects.filter(user=request.user)
-    allGroups = GroupMember.objects.exclude(user=request.user)
-    
-    args = {'groupMember':groupMember,
+    myGroups = request.user.my_groups.all()
+    otherGroups = set(UserGroup.objects.all()).difference(set(myGroups))
+    join = True
+    if request.user in groupMember:
+        join = False
+
+    args = {'groupMembers':groupMember,
             'groupBooks':groupBooks,
                 'otherBooks':otherBooks,
                 'groupMessages':groupMessages,
                 'myGroups':myGroups,
-                'allGroups':allGroups,
-                'group':group}
+                'allGroups':otherGroups,
+                'group':group,
+                'join':join}
     return render(request, 'groups/groupInfo.html', args)
 
 def addBookToGroup(request, bid, gid):

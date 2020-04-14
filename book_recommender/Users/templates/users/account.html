@@ -42,15 +42,15 @@
                         
                             {% for group in myGroups %}
                             <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                                <a href="/group/{{ group.group.id }}">
+                                <a href="/group/{{ group.id }}">
                                     
                                     <li>
-                                        {% if group.group.group_pic %}
-                                    <img src="{{ group.group.group_pic.url }}" height="30" width="30">
+                                        {% if group.group_pic %}
+                                    <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
                                     <img src="media/default.jpg" height="30" width="30">
                                     {% endif %}
-                                        {{ group.group.group_name }}
+                                        {{ group.group_name }}
                                     </li>
                                 </a>
                             </ul>
@@ -65,15 +65,15 @@
                             
                                 {% for group in otherGroups %}
                                 <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                                    <a href="/group/{{ group.group.id }}">
+                                    <a href="/group/{{ group.id }}">
                                         
                                         <li>
-                                            {% if group.group.group_pic %}
-                                    <img src="{{ group.group.group_pic.url }}" height="30" width="30">
+                                            {% if group.group_pic %}
+                                    <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
                                     <img src="media/default.jpg" height="30" width="30">
                                     {% endif %}
-                                            {{ group.group.group_name }}
+                                            {{ group.group_name }}
                                         </li>
                                     </a>
                                 </ul>
