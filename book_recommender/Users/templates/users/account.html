@@ -63,8 +63,11 @@
                         </div>
                         </a>
                         {% endfor %}
-                        {{ error }}
+                        
                     </div>
+                    {% if error %}
+                        {{ error }}
+                        {% endif %}
                     </div>
 
 
