@@ -8,7 +8,11 @@ urlpatterns = [
     path('create/', views.create, name = 'createGroup'),
     path('join/<int:id>/', views.join_group, name = 'join_group'),
     url(r'(?P<id>[0-9]+)/$', views.details, name = "groupDetails"),
-    url(r'(?P<bid>[0-9]+)/(?P<gid>[0-9]+)$', views.addBookToGroup, name = "addBookToGroup"),
+    # url(r'(?P<bid>[0-9]+)/(?P<gid>[0-9]+)$', views.addBookToGroup, name = "addBookToGroup"),
+    path('createShelf/', views.addShelf, name="createShelf"),
+    url(r'shelves/(?P<gid>[0-9]+)$', views.groupShelves, name="groupShelves"),
+    url(r'shelf/(?P<sid>[0-9]+)$', views.myShelf, name="groupShelf"),
+    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToGroupShelf")
 
     # path('logout/', LogoutView.as_view(next_page='/')),
     # path('register/', views.register, name="register"),

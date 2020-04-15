@@ -26,7 +26,6 @@ class UserGroup(models.Model):
     group_pic = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     group_genre = models.ManyToManyField(Genre, blank=True)
     group_creator = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
-    group_books = models.ManyToManyField(Book, blank=True)
     group_members = models.ManyToManyField(User, related_name='my_groups', blank=True)
     # group_user = models.ManyToManyField(settings.AUTH_USER_MODEL)
     # book_title = models.CharField(max_length = 1000)
@@ -36,6 +35,12 @@ class UserGroup(models.Model):
     # published_at = models.TextField()
     # book_cover = models.TextField(max_length = 1000)
     # book_author = models.CharField(max_length= 100)
-
     def __str__(self):
         return self.group_name
+
+class Groupshelf(models.Model):
+  name = models.CharField(max_length=256,blank=False, unique = True)
+  group = models.ForeignKey(UserGroup, on_delete=models.CASCADE)
+  book = models.ManyToManyField(Book, blank = True)
+
+    

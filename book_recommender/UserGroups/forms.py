@@ -64,3 +64,40 @@ class GroupCreationForm(forms.ModelForm):
 #             'last_name',
 #             'password'
 #         )
+
+class AddGroupShelfForm(forms.Form):
+    
+    def __init__(self, *args, **kwargs):
+         if len(args)>1:
+            self.group = int(args[1])
+         kwargs.pop('group',None)
+         super(AddGroupShelfForm, self).__init__(*args, **kwargs)
+    name = forms.CharField(label="Shelf Name",min_length=4, max_length=256)
+    class Meta:
+        model = Groupshelf
+        
+        fields = (
+            'name'
+        )
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        try:
+            shelf = Groupshelf.objects.get(name=name, group=UserGroup.objects.filter(id=self.group)[0])
+        except Groupshelf.DoesNotExist:
+            return name
+        print(name)
+        raise forms.ValidationError('Shelf %s already exists'%name)
+    
+    def save(self, commit=True):
+        # user = super(RegistrationForm, self).save(commit=False)
+        # user.first_name = self.cleaned_data['first_name']
+        # user.last_name = self.cleaned_data['last_name']
+        # user.email = self.cleaned_data['email']
+
+        if commit:
+            shelf = Groupshelf.objects.create(
+            name = self.cleaned_data['name'],
+            group = UserGroup.objects.filter(id=self.group)[0]
+            
+        )
