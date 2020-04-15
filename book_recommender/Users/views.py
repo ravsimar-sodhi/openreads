@@ -90,6 +90,7 @@ def myShelves(request):
 
 @login_required
 def myShelf(request, sid):
+    print(sid)
     user = request.user
     shelf = Bookshelf.objects.filter(user=user, id = sid)[0]
     shelfBooks = shelf.book.all()
@@ -103,4 +104,4 @@ def addBookToShelf(request, sid, bid):
     shelf = Bookshelf.objects.filter(id = sid)[0]
     book = Book.objects.filter(id = bid)[0]
     shelf.book.add(book)
-    return redirect("/user/"+str(userid)+"/shelf/")
+    return redirect("/user/"+str(sid)+"/shelf/")
