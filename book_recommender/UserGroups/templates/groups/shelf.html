@@ -42,7 +42,7 @@
                                              <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
                                              <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font>
                                              <br>
-                                             <a href="{% url 'addBookToGroupShelf' sid=shelf.id bid=book.id %}"><i class="fa fa-plus-square"> Book</i></a>
+                                             {% if member %}<a href="{% url 'addBookToGroupShelf' sid=shelf.id bid=book.id %}"><i class="fa fa-plus-square"> Book</i></a>{% endif %}
                                             </div>
                                         </a>
                                         </div>

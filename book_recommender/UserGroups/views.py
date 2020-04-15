@@ -93,10 +93,16 @@ def groupShelves(request, gid):
 @login_required
 def myShelf(request, sid):
     shelf = Groupshelf.objects.filter(id = sid)[0]
+    group = shelf.group
+    member = False
+    group_members = group.group_members.all()
+    if request.user in group_members:
+        member = True
+
     shelfBooks = shelf.book.all()
     books = Book.objects.all()
     otherBooks=set(books).difference(set(shelfBooks))
-    return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks})
+    return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks,'member':member})
 
 @login_required
 def addBookToShelf(request, sid, bid):
