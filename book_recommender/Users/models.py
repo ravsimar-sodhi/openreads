@@ -21,7 +21,7 @@ class rateList(models.Model):
     rate = models.IntegerField(default=1, choices=Choices)
 
 class Bookshelf(models.Model):
-  name = models.CharField(max_length=256,blank=False, unique = True)
+  name = models.CharField(max_length=256,blank=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   book = models.ManyToManyField(Book, blank = True)
 # Create your models here.

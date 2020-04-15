@@ -26,7 +26,7 @@ def register(request):
     return render(request, 'users/reg_form.html', args)
 
 @login_required
-def view_profile(request, args = None):
+def view_profile(request, args = None, error = None):
     userName = {'user':request.user}
     UserRateList=rateList.objects.filter(user=request.user)
     print (UserRateList)
@@ -40,7 +40,8 @@ def view_profile(request, args = None):
         form = AddShelfForm()
     shelves = Bookshelf.objects.filter(user=request.user)
     print(form)
-    return render(request, 'users/account.html', {'UserRateList':UserRateList, 'myGroups':myGroups, 'otherGroups':otherGroups, 'form': form, 'shelves':shelves})
+    
+    return render(request, 'users/account.html', {'UserRateList':UserRateList, 'myGroups':myGroups, 'otherGroups':otherGroups, 'form': form, 'shelves':shelves,'error':error})
 
 @login_required
 def edit_profile(request):
@@ -92,7 +93,11 @@ def myShelves(request):
 def myShelf(request, sid):
     print(sid)
     user = request.user
-    shelf = Bookshelf.objects.filter(user=user, id = sid)[0]
+    shelf = Bookshelf.objects.filter(user=user, id = sid)
+    if len(shelf) == 0:
+        return view_profile(request, error = "Not your shelf")
+    else:
+        shelf = shelf[0]
     shelfBooks = shelf.book.all()
     books = Book.objects.all()
     otherBooks=set(books).difference(set(shelfBooks))
