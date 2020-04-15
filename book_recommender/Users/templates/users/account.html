@@ -65,9 +65,13 @@
                         {% endfor %}
                         
                     </div>
-                    {% if error %}
-                        {{ error }}
-                        {% endif %}
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                     </div>
 
 

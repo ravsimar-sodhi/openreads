@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MESSAGE_LEVEL = 30
 
 # Application definition
 

@@ -10,6 +10,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from Users.models import *
 from UserGroups.models import *
+from django.contrib import messages
 
 def register(request):
     print("222")
@@ -95,6 +96,7 @@ def myShelf(request, sid):
     user = request.user
     shelf = Bookshelf.objects.filter(user=user, id = sid)
     if len(shelf) == 0:
+        messages.warning(request, 'It is not your bookshelf!')
         return view_profile(request, error = "Not your shelf")
     else:
         shelf = shelf[0]
