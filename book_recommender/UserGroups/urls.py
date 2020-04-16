@@ -12,7 +12,9 @@ urlpatterns = [
     path('createShelf/', views.addShelf, name="createShelf"),
     url(r'shelves/(?P<gid>[0-9]+)$', views.groupShelves, name="groupShelves"),
     url(r'shelf/(?P<sid>[0-9]+)$', views.myShelf, name="groupShelf"),
-    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToGroupShelf")
+    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToGroupShelf"),
+    url(r'removeBookFromShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.removeBookFromShelf, name = "removeBookFromShelf"),
+
 
     # path('logout/', LogoutView.as_view(next_page='/')),
     # path('register/', views.register, name="register"),

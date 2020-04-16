@@ -112,5 +112,14 @@ def addBookToShelf(request, sid, bid):
     shelf.book.add(book)
     return redirect("/group/shelf/"+str(shelf.id))
 
-
-
+@login_required
+def removeBookFromShelf(request, sid, bid):
+    userid = request.user.id
+    shelf = Groupshelf.objects.get(id = sid)
+    book = Book.objects.get(id = bid)
+    if shelf.book.remove(book):
+        print("Book in shelf, removing...")
+    else:
+        print("Book not in shelf!")
+        # TODO: give alert/message
+    return redirect("/group/shelf/"+str(shelf.id))
