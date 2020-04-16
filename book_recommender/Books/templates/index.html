@@ -1,76 +1,46 @@
 <body style="background-image: url('/media/4.jpeg') ; background-size: 100%; ">
-{% extends "base.html" %}
-{% load poll_extras %}
-{% block content %}
+    {% extends "base.html" %}
+    {% load poll_extras %}
+    {% block content %}
 
-<div class="container">
-    {% for i in indexList %}
-
-    <hr>
-    <hr>
-
-    <div class="row" style="padding:10px">
-        {% with genre=genres|indx:i %}
-        <div style="text-align:center" style="width:10px"><h6><font size="5"><strong>{{genre.name}}</strong></font></h6></div>
-        {% endwith %}
-    </div>
-
-    <div class="row" style="padding:10px">
-        {% with book=books|indx:i %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
-
-        {% with j=i|add:1 %}
-        {% if j < noOfBooks %}
-        {% with book=books|indx:j %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
-        {% endif %}
-        {% endwith %}
-
-        {% with j=i|add:2 %}
-        {% if j < noOfBooks %}
-        {% with book=books|indx:j %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
-        {% endif %}
-        {% endwith %}
-
-        {% with j=i|add:3 %}
-        {% if j < noOfBooks %}
-        {% with book=books|indx:j %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
-        {% endif %}
-        {% endwith %}
-
-        {% with j=i|add:4 %}
-        {% if j < noOfBooks %}
-        {% with book=books|indx:j %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
-        {% endif %}
-        {% endwith %}
+        <hr>
+        <hr>
+        {% for key,value in finalBooksDict.items %}
+        {% if value %}
+        <div class="row" style="padding:10px;text-align:center;">
+            {% with genre=key %}
+            
+            <div style="text-align:center" style="width:10px"><h6><font size="5"><strong>{{genre.name}}</strong></font></h6></div>
+            
+            {% endwith %}
+        </div>
+        <div class="row" style="padding:10px;text-align:center;">
+        {% for book in value %}
+        <div style="width:200px;float:left;padding:20px;">
+            <a href ="/books/{{ book.id }}/" >
+            <div class="box" style="text-align: center;margin:0 auto;">
+                 <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
+                 <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+            </div>
         
-        {% with j=i|add:5 %}
-        {% if j < noOfBooks %}
-        {% with book=books|indx:j %}
-        <div class = "col-sm-2" style = "text-align:center"><a href="/books/{{book.id}}"><div class="box"><img src="{{ book.book_cover }}"></br><h6>{{book.book_title}}({{book.published_at}})</h6></div></a></div>
-        {% endwith %}
         {% endif %}
-        {% endwith %}
+        
 
-    </div>
-    {% endfor %}
-</div>
-  </body>
-{% endblock %}
-<!-- {% block javascript %}
-  <script>
-  var maxBooksBTN=document.getElementById('maxBooks');
-  maxBooksBTN.addEventListener('onchange',function () {
-      console.log("zzzzzzzzzzzzz")
-
-  });
-  </script>
-  {% endblock %} -->
+        {% endfor %}
+ 
+      </body>
+    {% endblock %}
+    <!-- {% block javascript %}
+      <script>
+      var maxBooksBTN=document.getElementById('maxBooks');
+      maxBooksBTN.addEventListener('onchange',function () {
+          console.log("zzzzzzzzzzzzz")
+    
+      });
+      </script>
+      {% endblock %} -->
+    

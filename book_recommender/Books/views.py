@@ -56,23 +56,19 @@ def userRateList(request):
 def allBooks(request):
 
     booksPerGenre=6
-    genresList=[]
-    finalBooksList=[]
+    finalBooksDict = {}
     for genre in Genre.objects.all():
         cnt=0
+        bookList=[]
         # bookList = Book.objects.filter(book_genre__icontains=genre.name)
         for book in Book.objects.all():
             if genre in book.book_genre.all():
-                finalBooksList.append(book)
-                genresList.append(genre)
+                bookList.append(book)
                 cnt=cnt+1
                 if (cnt>=booksPerGenre):
                     break
+        finalBooksDict[genre]=bookList
 
 
-    indexList = []
-    for i in range(0, len(finalBooksList), booksPerGenre):
-        indexList.append(i)
 
-    return render(request, 'index.html', {'noOfBooks':len(finalBooksList), 'books': finalBooksList, "indexList" : indexList, "genres": genresList})
-
+    return render(request, 'index.html', {'finalBooksDict':finalBooksDict})
