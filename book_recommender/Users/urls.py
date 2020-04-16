@@ -13,5 +13,7 @@ urlpatterns = [
     path('createShelf/', views.addShelf, name="createShelf"),
     path('shelves/', views.myShelves, name="shelves"),
     re_path(r'(?P<sid>[0-9]+)/shelf/$', views.myShelf, name="shelf"),
-    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToShelf")
+    url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToShelf"),
+    url(r'removeBookFromShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.removeBookFromShelf, name = "removeBookFromShelf"),
+
 ]

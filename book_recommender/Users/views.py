@@ -41,7 +41,7 @@ def view_profile(request, args = None, error = None):
         form = AddShelfForm()
     shelves = Bookshelf.objects.filter(user=request.user)
     print(form)
-    
+
     return render(request, 'users/account.html', {'UserRateList':UserRateList, 'myGroups':myGroups, 'otherGroups':otherGroups, 'form': form, 'shelves':shelves,'error':error})
 
 @login_required
@@ -111,4 +111,16 @@ def addBookToShelf(request, sid, bid):
     shelf = Bookshelf.objects.filter(id = sid)[0]
     book = Book.objects.filter(id = bid)[0]
     shelf.book.add(book)
+    return redirect("/user/"+str(sid)+"/shelf/")
+
+@login_required
+def removeBookFromShelf(request, sid, bid):
+    userid = request.user.id
+    shelf = Bookshelf.objects.get(id = sid)
+    book = Book.objects.get(id = bid)
+    if shelf.book.remove(book):
+        print("Book in shelf, removing...")
+    else:
+        print("Book not in shelf!")
+        # TODO: give alert/message
     return redirect("/user/"+str(sid)+"/shelf/")
