@@ -19,9 +19,10 @@ def details(request,id):
     bookCategories = []
     if book.book_genre:
         for category in book.book_genre.all():
-            bookCategories.append(category.name) 
+            bookCategories.append(category.name)
+    shelves = Bookshelf.objects.filter(user = request.user)
     return render(request,"detail.html",
-    {"book":book, "categories":bookCategories});
+    {"book":book, "categories":bookCategories, 'shelves' : shelves});
 
 def search(request):
     text_search = request.GET.get("in")
