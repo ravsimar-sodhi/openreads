@@ -66,14 +66,14 @@ def allBooks(request):
     finalBooksDict = {}
     for genre in Genre.objects.all():
         cnt=0
-        bookList=[]
+        bookList=genre.book_set.all().order_by('book_title')[:booksPerGenre]
         # bookList = Book.objects.filter(book_genre__icontains=genre.name)
-        for book in Book.objects.all():
-            if genre in book.book_genre.all():
-                bookList.append(book)
-                cnt=cnt+1
-                if (cnt>=booksPerGenre):
-                    break
+        # for book in Book.objects.all():
+        #     if genre in book.book_genre.all():
+        #         bookList.append(book)
+        #         cnt=cnt+1
+        #         if (cnt>=booksPerGenre):
+        #             break
         finalBooksDict[genre]=bookList
 
 
