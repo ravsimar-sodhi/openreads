@@ -33,9 +33,12 @@
                         <div class="card-footer w-100 text-muted">
                         {% with stars=rate.rate %}
                         {% for i in stars|times %}
-                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked" style="color: gold;"></span>
                         {% endfor %}
                         {% with j=stars|negate|add:5 %}
+                        {% for i in j|times %}
+                            <span class="fa fa-star"></span>
+                        {% endfor %}
                         {% endwith %}
                         {% endwith %}
 
