@@ -92,7 +92,6 @@ def myShelves(request):
 
 @login_required
 def myShelf(request, sid):
-    print(sid)
     user = request.user
     shelf = Bookshelf.objects.filter(user=user, id = sid)
     if len(shelf) == 0:
@@ -118,6 +117,8 @@ def removeBookFromShelf(request, sid, bid):
     userid = request.user.id
     shelf = Bookshelf.objects.get(id = sid)
     book = Book.objects.get(id = bid)
+    print("111")
+    print(sid)
     if shelf.book.remove(book):
         print("Book in shelf, removing...")
     else:
