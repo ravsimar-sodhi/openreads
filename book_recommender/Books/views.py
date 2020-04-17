@@ -10,6 +10,7 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from UserGroups.models import Groupshelf
 
 
 # Create your views here.
@@ -21,8 +22,13 @@ def details(request,id):
         for category in book.book_genre.all():
             bookCategories.append(category.name)
     shelves = Bookshelf.objects.filter(user = request.user)
+    user = User.objects.get(id=request.user.id)
+    groups = user.my_groups.all()
+    groupshelves = Groupshelf.objects.filter(group__in=groups)
+    # TODO: prevent user from adding to groupshelves where he is not member
+    #       maybe restructure code or change from  GET request to POST
     return render(request,"detail.html",
-    {"book":book, "categories":bookCategories, 'shelves' : shelves});
+    {"book":book, "categories":bookCategories, 'shelves' : shelves, 'groupshelves': groupshelves});
 
 def search(request):
     text_search = request.GET.get("in")

@@ -103,6 +103,19 @@
             {% endfor %}
           </div>
         </div>
+        <br>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Add book to Group shelf
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for shelf in groupshelves %}
+            <a class=dropdown-item href="{% url 'addBookToGroupShelf' sid=shelf.id bid=book.id %}"> {{ shelf.group }} - {{shelf.name}} </a>
+            {% endfor %}
+
+          </div>
+        </div>
 
 <p id="book_id" book_id="{{book.id}}" style="display:none">
 <h1 style = "font-family: 'satisfy'; color: #000000;">Rate this book:</h1>
