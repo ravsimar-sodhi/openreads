@@ -5,35 +5,41 @@
 <br>
 <div class='container'>
     <div class="row">
-        <div class="col-3">
-            <div>
-                <div class="left-element scrollable"></div>
+        <div class="col-4" >
+            <div class="container">
                 <h2>Recently rated books:</h2><br>
 
                 {% for rate in UserRateList %}
-                <div><a href="/books/{{ rate.book.id }}/">
-                        <div>
-                            <div> <img class="card-img-top" src="{{ rate.book.book_cover }}" alt="" style="width:100px;"><br>
-                                <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ rate.book }}
-                                </font>
-                                </br>
-                                {% with stars=rate.rate %}
-                                {% for i in stars|times %}
-                                <span class="fa fa-star checked"></span>
-                                {% endfor %}
-                                {% with j=stars|negate|add:5 %}
-                                {% for i in j|times %}
-                                <span class="fa fa-star"></span>
-                                {% endfor %}
-                                {% endwith %}
-                                {% endwith %}
+
+                    <div class="card border-secondary" style="width: 95%; padding:1px;">
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <a href="/books/{{rate.book.id}}">
+                                    <img src="{{rate.book.book_cover}}" class="img-fluid" alt="{{rate.book}}"
+                                    style="width:100px;">
+                                </a>
+                            </div>
+                            <div class="col">
+                                <div class="card-block px-2">
+                                <h5 class="card-title">
+                                    <a href="/books/{{rate.book.id}}">
+                                        {{rate.book}}
+                                        </a>
+                                </h5>
+                                <p class="card-text">By {{rate.book.book_author }}</p>
+                                <p class="card-text"><small class="text-muted">{{rate.book.book_description}}</small></p>
+                                <p class="card-text">
+                                    Your Rating: //TODO
+                                </p>
 
                             </div>
                         </div>
-                    </a></div>
+                    </div>
+                </div>
+                <br>
                 {% endfor %}
-                <br><br>
             </div>
+            <br><br>
         </div>
         <div class="col-6">
             <h2> Bookshelves</h2>
@@ -80,61 +86,61 @@
                 </div>
             </div>
         </div>
-            <div class="col-3">
-                {% if myGroups or otherGroups %}
-                <div class="right-element">
+        <div class="col-2">
+            {% if myGroups or otherGroups %}
+            <div class="right-element">
 
-                    <div class="class1" style="height:50px;">
-                        <h3>Your groups</h3>
-                    </div>
-                    <div class="scrollable" style="max-height: 50%;">
-                        {% for group in myGroups %}
-                        <ul class="class1"
-                            style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                            <a href="/group/{{ group.id }}">
-
-                                <li>
-                                    {% if group.group_pic %}
-                                    <img src="{{ group.group_pic.url }}" height="30" width="30">
-                                    {% else %}
-                                    <img src="media/default.jpg" height="30" width="30">
-                                    {% endif %}
-                                    {{ group.group_name }}
-                                </li>
-                            </a>
-                        </ul>
-                        {% endfor %}
-
-                    </div>
-                    </br>
-
-                    <div class="class1" style="height:50px;">
-                        <h3>All other groups</h3>
-                    </div>
-                    <div class="scrollable" style="max-height: 50%;">
-                        {% for group in otherGroups %}
-                        <ul class="class1"
-                            style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                            <a href="/group/{{ group.id }}">
-
-                                <li>
-                                    {% if group.group_pic %}
-                                    <img src="{{ group.group_pic.url }}" height="30" width="30">
-                                    {% else %}
-                                    <img src="media/default.jpg" height="30" width="30">
-                                    {% endif %}
-                                    {{ group.group_name }}
-                                </li>
-                            </a>
-                        </ul>
-                        {% endfor %}
-
-                    </div>
+                <div class="class1" style="height:50px;">
+                    <h3>Your groups</h3>
                 </div>
-                {% endif %}
+                <div class="scrollable" style="max-height: 50%;">
+                    {% for group in myGroups %}
+                    <ul class="class1"
+                        style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
+                        <a href="/group/{{ group.id }}">
+
+                            <li>
+                                {% if group.group_pic %}
+                                <img src="{{ group.group_pic.url }}" height="30" width="30">
+                                {% else %}
+                                <img src="media/default.jpg" height="30" width="30">
+                                {% endif %}
+                                {{ group.group_name }}
+                            </li>
+                        </a>
+                    </ul>
+                    {% endfor %}
+
+                </div>
+                </br>
+
+                <div class="class1" style="height:50px;">
+                    <h3>All other groups</h3>
+                </div>
+                <div class="scrollable" style="max-height: 50%;">
+                    {% for group in otherGroups %}
+                    <ul class="class1"
+                        style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
+                        <a href="/group/{{ group.id }}">
+
+                            <li>
+                                {% if group.group_pic %}
+                                <img src="{{ group.group_pic.url }}" height="30" width="30">
+                                {% else %}
+                                <img src="media/default.jpg" height="30" width="30">
+                                {% endif %}
+                                {{ group.group_name }}
+                            </li>
+                        </a>
+                    </ul>
+                    {% endfor %}
+
+                </div>
             </div>
+            {% endif %}
         </div>
     </div>
+</div>
 </div>
 
 
