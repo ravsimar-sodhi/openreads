@@ -7,6 +7,7 @@ from django.contrib.auth.views import LoginView
 def index(request):
     return render(request,'login.html', {})
 
+# def home(request):
 # def custom_login(request):
 #     if request.user.is_authenticated:
 #         return redirect('/books/')

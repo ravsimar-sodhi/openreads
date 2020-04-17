@@ -9,9 +9,9 @@
         {% if value %}
         <div class="row" style="padding:10px;text-align:center;">
             {% with genre=key %}
-            
+
             <div style="text-align:center" style="width:10px"><h6><font size="5"><strong>{{genre.name}}</strong></font></h6></div>
-            
+
             {% endwith %}
         </div>
         <div class="row" style="padding:10px;text-align:center;">
@@ -26,12 +26,12 @@
             </div>
             {% endfor %}
             </div>
-        
+
         {% endif %}
-        
+
 
         {% endfor %}
- 
+
       </body>
     {% endblock %}
     <!-- {% block javascript %}
@@ -39,8 +39,7 @@
       var maxBooksBTN=document.getElementById('maxBooks');
       maxBooksBTN.addEventListener('onchange',function () {
           console.log("zzzzzzzzzzzzz")
-    
+
       });
       </script>
       {% endblock %} -->
-    

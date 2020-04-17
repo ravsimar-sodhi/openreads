@@ -1,135 +1,143 @@
-<d/div style="background-image: url('/media/3.jpeg') ; background-size:cover; ">
-    
-    {% extends "base.html" %}
-    {% load poll_extras %}
-    {% block content %}
-    
-            <div style="margin:0 auto; text-align: center;">
-                <div style="margin:0 auto; text-align: center;">
-                    <h1 style= "text-align: center;color: black; font-family: 'Lobster';
-                            font-size: 40px">Welcome {{ request.user }}</h1>
-                            <br>
-                    <div style="left: 350px;padding: 0;margin: 0;">
-                    <div class ="left-element scrollable" style="background-color:#e1e1d0; height:75%;width:350px;margin:0 auto;padding-bottom: 10px;left:0;">
-                            <!--<a href="/books">Browse all books </a>-->
-                            <h1 style= "font-size: 30px; color: #2b5b81;">Your recently rated books:</h1><br>
-                        
-                            {% for rate in UserRateList %}
-                        <div class="row" style="padding-bottom: 20px;"><a href ="/books/{{ rate.book.id }}/" ><div class="col-sm-6 col-md-offset-3"><div class="box" style="text-align: center;margin:0 auto;"> <img class="card-img-top" src="{{ rate.book.book_cover }}" alt=""><br>
-                                <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ rate.book }}</font>
-                        </br>
+{% extends "base.html" %}
+{% load poll_extras %}
+
+{% block content %}
+<br>
+<div class='container'>
+    <div class="row">
+        <div class="col-3">
+            <div>
+                <div class="left-element scrollable"></div>
+                <h2>Recently rated books:</h2><br>
+
+                {% for rate in UserRateList %}
+                <div><a href="/books/{{ rate.book.id }}/">
+                        <div>
+                            <div> <img class="card-img-top" src="{{ rate.book.book_cover }}" alt="" style="width:100px;"><br>
+                                <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ rate.book }}
+                                </font>
+                                </br>
                                 {% with stars=rate.rate %}
                                 {% for i in stars|times %}
-                                    <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
                                 {% endfor %}
                                 {% with j=stars|negate|add:5 %}
                                 {% for i in j|times %}
-                                    <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
                                 {% endfor %}
                                 {% endwith %}
                                 {% endwith %}
-                                   
-                            </div></div></a></div>
-                            {% endfor %}
-                                <br><br>
-                    </div>
 
-                    <div class="middle-element scrollable" style="height:80%;">
-                        <div class="scrollable" style="max-height: 50%;">
-                            <div class="class1" style="width:100%;height:80px">
-                            <form action='/user/createShelf/' method="post" style="color:rgb(17, 160, 226);margin-left:60px;margin-top:10px;" class="col-md-4">
-                                {% for field in form %}
-                                {% csrf_token %}
-                                <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-                                    
-                                <h4 style="white-space: nowrap;margin-left: 200px;">{{ field.label_tag}}</h4>&nbsp;&nbsp;&nbsp;&nbsp;<p style="color:rgb(24, 1, 1);">{{field}}</p>
-                                
+                            </div>
+                        </div>
+                    </a></div>
+                {% endfor %}
+                <br><br>
+            </div>
+        </div>
+        <div class="col-6">
+            <h2> Bookshelves</h2>
+            <div class="middle-element scrollable" style="height:80%;">
+                <div class="scrollable" style="max-height: 50%;">
+                    <div class="class1" style="width:100%;height:80px">
+                        <form action='/user/createShelf/' method="post"
+                            style="color:rgb(17, 160, 226);margin-left:60px;margin-top:10px;" class="col-md-4">
+                            {% for field in form %}
+                            {% csrf_token %}
+                            <div
+                                style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+
+                                <h4 style="white-space: nowrap;margin-left: 200px;">{{ field.label_tag}}</h4>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<p style="color:rgb(24, 1, 1);">{{field}}</p>
+
                                 {% endfor %}&nbsp;&nbsp;&nbsp;
                                 <div style="padding:0;">
-                                <button type="submit" style="white-space: nowrap;background-color:rgb(245, 231, 231);color:rgb(39, 5, 192);width:200px;height:40px;"><i class="fa fa-plus-square"> New BookShelf</i></button>
-                            </div>
+                                    <button type="submit"
+                                        style="white-space: nowrap;background-color:rgb(245, 231, 231);color:rgb(39, 5, 192);width:200px;height:40px;"><i
+                                            class="fa fa-plus-square"> New BookShelf</i></button>
+                                </div>
                             </div>
                             <div style="white-space: nowrap;">{{ form.name.errors }}</div>
-                            </form>
-                            
-                            </div>
-                        </div>
-                    
-                        <a href="/user/shelves"><div class="class1" style="width:100%;height:50px; text-align: center;"><h1 style= "font-size: 30px; color: #2b5b81;">My Bookshelves</h1></div></a>
-                    <div class="scrollable" style="max-height:300px;">
-                        {% for shelf in shelves %}
-                        <a href="/user/{{ shelf.id }}/shelf"><div class="class1" style="width:100%;height:50px;text-align: center;">
+                        </form>
+
+                    </div>
+                </div>
+
+                <a href="/user/shelves">
+                    <div class="class1" style="width:100%;height:50px; text-align: center;">
+                        <h1 style="font-size: 30px; color: #2b5b81;">My Bookshelves</h1>
+                    </div>
+                </a>
+                <div class="scrollable" style="max-height:300px;">
+                    {% for shelf in shelves %}
+                    <a href="/user/{{ shelf.id }}/shelf">
+                        <div class="class1" style="width:100%;height:50px;text-align: center;">
                             <h3 style="padding:0;">{{ shelf.name }}</h3>
                         </div>
-                        </a>
-                        {% endfor %}
-                        
-                    </div>
-                    {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    </div>
+                    </a>
+                    {% endfor %}
 
+                </div>
+            </div>
+        </div>
+            <div class="col-3">
+                {% if myGroups or otherGroups %}
+                <div class="right-element">
 
-                    {% if myGroups or otherGroups %}
-                    <div class="right-element">
-                        
-                        <div class="class1" style="height:50px;">
-                            <h3>Your groups</h3>
-                        </div>
-                        <div class="scrollable" style="max-height: 50%;">
-                            {% for group in myGroups %}
-                            <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                                <a href="/group/{{ group.id }}">
-                                    
-                                    <li>
-                                        {% if group.group_pic %}
+                    <div class="class1" style="height:50px;">
+                        <h3>Your groups</h3>
+                    </div>
+                    <div class="scrollable" style="max-height: 50%;">
+                        {% for group in myGroups %}
+                        <ul class="class1"
+                            style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
+                            <a href="/group/{{ group.id }}">
+
+                                <li>
+                                    {% if group.group_pic %}
                                     <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
                                     <img src="media/default.jpg" height="30" width="30">
                                     {% endif %}
-                                        {{ group.group_name }}
-                                    </li>
-                                </a>
-                            </ul>
-                            {% endfor %}
-                        
-                        </div>
+                                    {{ group.group_name }}
+                                </li>
+                            </a>
+                        </ul>
+                        {% endfor %}
+
+                    </div>
                     </br>
-                        
-                            <div class="class1" style="height:50px;">
-                                <h3>All other groups</h3>
-                            </div>
-                            <div class="scrollable" style="max-height: 50%;">
-                                {% for group in otherGroups %}
-                                <ul class="class1" style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
-                                    <a href="/group/{{ group.id }}">
-                                        
-                                        <li>
-                                            {% if group.group_pic %}
+
+                    <div class="class1" style="height:50px;">
+                        <h3>All other groups</h3>
+                    </div>
+                    <div class="scrollable" style="max-height: 50%;">
+                        {% for group in otherGroups %}
+                        <ul class="class1"
+                            style="width:100%;list-style-type:none;padding-left: 10px;height:50px;padding-top: 10px;">
+                            <a href="/group/{{ group.id }}">
+
+                                <li>
+                                    {% if group.group_pic %}
                                     <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
                                     <img src="media/default.jpg" height="30" width="30">
                                     {% endif %}
-                                            {{ group.group_name }}
-                                        </li>
-                                    </a>
-                                </ul>
-                                {% endfor %}
-                            
-                        </div>
-                    </div>
-                    {% endif %}
-                    </div>
+                                    {{ group.group_name }}
+                                </li>
+                            </a>
+                        </ul>
+                        {% endfor %}
 
-                    </div></div>
-                    
-                    
-    
-    
-    {% endblock %}
-    
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
