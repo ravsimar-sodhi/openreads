@@ -39,7 +39,7 @@ class UserGroup(models.Model):
         return self.group_name
 
 class Groupshelf(models.Model):
-  name = models.CharField(max_length=256,blank=False, unique = True)
+  name = models.CharField(max_length=256,blank=False)
   group = models.ForeignKey(UserGroup, on_delete=models.CASCADE)
   book = models.ManyToManyField(Book, blank = True)
 
