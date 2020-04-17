@@ -11,7 +11,7 @@
 
                 {% for rate in UserRateList %}
 
-                    <div class="card border-secondary" style="width: 95%;">
+                    <div class="card border-secondary" style="width:95%;">
                         <div class="row no-gutters">
                             <div class="col-auto">
                                 <a href="/books/{{rate.book.id}}">
@@ -21,13 +21,13 @@
                             </div>
                             <div class="col">
                                 <div class="card-block px-2">
-                                <h5 class="card-title">
+                                <h5 class="card-title" style="display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
                                     <a href="/books/{{rate.book.id}}">
                                         {{rate.book}}
                                         </a>
                                 </h5>
                                 <p class="card-text">By {{rate.book.book_author }}</p>
-                                <p class="card-text"><small class="text-muted">{{rate.book.book_description}}</small></p>
+                                <span class="text-muted" style="font-size: x-small; display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{rate.book.book_description}}</span>
                             </div>
                         </div>
                         <div class="card-footer w-100 text-muted">
