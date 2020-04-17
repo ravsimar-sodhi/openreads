@@ -101,7 +101,8 @@ def myShelf(request, sid):
 
     shelfBooks = shelf.book.all()
     books = Book.objects.all()
-    otherBooks=list(set(books).difference(set(shelfBooks)))[0:5]
+    otherBooks=list(set(books).difference(set(shelfBooks)))
+    otherBooks = otherBooks[0:min(5,len(otherBooks))]
     return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks,'member':member})
 
 @login_required
