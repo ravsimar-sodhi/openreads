@@ -17,6 +17,8 @@ class Book(models.Model):
     published_at = models.TextField()
     book_cover = models.TextField(max_length = 1000)
     book_author = models.CharField(max_length= 100)
+    book_avg_rating = models.FloatField(default = 0.0)
+    book_num_of_ratings = models.IntegerField(default = 0)
 
     def __str__(self):
         return self.book_title

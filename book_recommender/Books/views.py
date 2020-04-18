@@ -43,6 +43,10 @@ def userRateList(request):
     bookID = request.GET.get('bookID')
     bookTitle= Book.objects.get(id=bookID).book_title
     print(bookTitle)
+    book = Book.objects.get(id=bookID)
+    num_of_ratings = book.book_num_of_ratings
+    avg_rating = book.book_avg_rating
+    
     checkExistedRatings= rateList.objects.filter(user= request.user, book_id = bookID)
     if len(checkExistedRatings)==0:
         rateList.objects.create(user= request.user, book_id = bookID, rate=stars)
@@ -50,13 +54,20 @@ def userRateList(request):
             'rateStatus': int(1),
             'bookTitle':bookTitle
         }
+        avg_rating = ((avg_rating*num_of_ratings)+int(stars))/(num_of_ratings + 1)
+        num_of_ratings += 1
+        Book.objects.filter(id=bookID).update(book_num_of_ratings = num_of_ratings, book_avg_rating = avg_rating)
         return JsonResponse(data)
     else:
+        old_rate = rateList.objects.filter(user= request.user, book_id = bookID)[0].rate
         rateList.objects.filter(user= request.user, book_id = bookID).update(rate=stars)
         data = {
             'rateStatus': int(0),
             'bookTitle':bookTitle
         }
+        avg_rating = ((avg_rating*num_of_ratings)-old_rate+int(stars))/(num_of_ratings)
+        Book.objects.filter(id=bookID).update(book_avg_rating = avg_rating)
+        
         return JsonResponse(data)
 
 
