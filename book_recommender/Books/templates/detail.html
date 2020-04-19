@@ -1,268 +1,293 @@
-<body style="background-image: url('/media/4.jpeg') ; background-size: 100%; ">
 {% extends 'base.html' %}
-
-{% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}goodreads{% endblock %}</title>
+<br>
+<style>
+  .rating {
+    position:relative;
+    transform: translate(-50%, -50%);
+    transform: rotateY(180deg);
+    display: flex;
+  }
 
+  .rating input {
+    display: none;
+  }
 
-    {% load static %}
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  .rating label {
+    display: block;
+    cursor: pointer;
+    width: 25px;
+  }
 
-    <style>
-            h1 {
-                color: #000000;
-                font-family: 'Ariel';
-            }
-            .rating{
-              position:absolute;
+  .rating label:before {
+    content: '\f005';
+    font-family: fontAwesome;
+    position: relative;
+    display: block;
+    font-size: 25px;
+    color:gray;
+  }
 
-              transform:translate(-50%,-50%);
-              transform: rotateY(180deg);
-              display:flex;
-            }
+  .rating label:after {
+    content: '\f005';
+    font-family: fontAwesome;
+    position: absolute;
+    display: block;
+    font-size: 25px;
+    color:gold;
+    top: 0;
+    opacity: 0;
+    transition: .5s;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+  }
 
-            .rating input{
-              display: none;
-            }
+  .rating label:hover:after,
+  .rating label:hover~label:after,
+  .rating input:checked~label:after {
+    opacity: 1;
+  }
+</style>
+<div id="bookdiv" class="container">
+  <div class="row">
+    <div class="col-3">
+      <img class="card-img-top" src="{{ book.book_cover }}" alt="" style="width:200px; margin-bottom: 50px;">
 
-            .rating label{
-              display: block;
-              cursor: pointer;
-              width: 50px;
-              background: #ccc;
-            }
-
-            .rating label:before {
-              content: '\f005';
-              font-family: fontAwesome;
-              position: relative;
-              display: block;
-              font-size: 50px;
-              color:#101010;
-            }
-
-            .rating label:after {
-              content: '\f005';
-              font-family: fontAwesome;
-              position: absolute;
-              display: block;
-              font-size: 50px;
-              color:#1f9cff;
-              top:0;
-              opacity: 0;
-              transition: .5s;
-              text-shadow:0 2px 5px rgba(0,0,0,.5);
-            }
-
-            .rating label:hover:after,
-            .rating label:hover ~ label:after,
-            .rating input:checked ~ label:after
-             {
-              opacity: 1;
-            }
-
-
-
-    </style>
-</head>
-
-<body>
-
-
-
-
-<div id ="bookdiv" style="text-align:center">
-
-
-    <img class="card-img-top" src="{{ book.book_cover }}" alt="" style="width:250px;height:250px;">
-
-        <h1 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace' ">{{  book.book_title }}</h1>
-
-        <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Written by :{{ book.book_author }}</h3>
-        <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Published on:{{ book.published_at }}</h3>
-
-        {% if categories %}
-        <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Genres: {{ categories }} </h3>
-        {% endif %}
-        {% if book.book_description %}
-        <h3 style= "font-size: 30px; color: #2b5b81; font-family: 'monospace'">Overview: {{ book.book_description }}</h3>
-        {% endif %}
+      <div class="row" style="padding:4px;">
+        <p id="book_id" book_id="{{book.id}}" style="display:none">
+          <h4><i>Rate:</i></h4>
+          <br>
+          <div class="rating" style="align-items: center;">
+            <input type="radio" name="star" id="star1" class="stars"><label for="star1"></label>
+            <input type="radio" name="star" id="star2" class="stars"><label for="star2"></label>
+            <input type="radio" name="star" id="star3" class="stars"><label for="star3"></label>
+            <input type="radio" name="star" id="star4" class="stars"><label for="star4"></label>
+            <input type="radio" name="star" id="star5" class="stars"><label for="star5"></label>
+          </div>
+        </p>
+      </div>
+      <div class="row">
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Add book to shelf
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {% for shelf in shelves %}
-            <a class = dropdown-item href="{% url 'addBookToShelf' sid=shelf.id bid=book.id %}"> {{ shelf.name }}</a>
+            <a class=dropdown-item href="{% url 'addBookToShelf' sid=shelf.id bid=book.id %}"> {{ shelf.name }}</a>
             {% endfor %}
           </div>
         </div>
         <br>
+        <br>
+
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Add book to Group shelf
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {% for shelf in groupshelves %}
-            <a class=dropdown-item href="{% url 'addBookToGroupShelf' sid=shelf.id bid=book.id %}"> {{ shelf.group }} - {{shelf.name}} </a>
+            <a class=dropdown-item href="{% url 'addBookToGroupShelf' sid=shelf.id bid=book.id %}"> {{ shelf.group }} -
+              {{shelf.name}} </a>
             {% endfor %}
 
           </div>
         </div>
 
-<p id="book_id" book_id="{{book.id}}" style="display:none">
-<h1 style = "font-family: 'satisfy'; color: #000000;">Rate this book:</h1>
-<div class="rating" style="align-items: center;">
-  <input type="radio" name="star" id="star1" class="stars"><label for="star1"></label>
-  <input type="radio" name="star" id="star2" class="stars"><label for="star2"></label>
-  <input type="radio" name="star" id="star3" class="stars"><label for="star3"></label>
-  <input type="radio" name="star" id="star4" class="stars"><label for="star4"></label>
-  <input type="radio" name="star" id="star5" class="stars"><label for="star5"></label>
+      </div>
+    </div>
+
+    <div class="col-8">
+
+
+      <h1>{{  book.book_title }}</h1>
+
+      <h5>By
+        <i>
+          {{ book.book_author }}
+        </i>
+      </h5>
+      <div class="row">
+
+        <div class="col-2">
+
+          <!-- Add avg rating logic from here -->
+          <span></span>
+          <span class="fa fa-star checked" style="color: gold;"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+
+          <!--  to here-->
+        </div>
+        <span class="col-4">Avg Rating: {{book.book_avg_rating}}</span>
+        <span class="col-4"> {{book.book_num_of_ratings}} ratings </span>
+      </div>
+      <br>
+
+      <div style="min-height: 120px; padding:5px;">
+        <i>
+          {% if book.book_description %}
+          {{ book.book_description }}
+          {% else %}
+          No Description Available
+          {% endif %}
+        </i>
+      </div>
+      <div class="text-muted">
+        Published at {{ book.published_at }}
+      </div>
+    </div>
+    <div class="col-1" style="align-content: right;">
+      <br>
+      <br>
+      <br>
+      <br>
+
+      {% if categories %}
+      <h5>Genres</h5>
+      <div>{{ categories }} </div>
+      {% endif %}
+
+    </div>
+    <br>
+
+
+    <br>
+
+    </ div>
+  </div>
 </div>
 
-
-<br>
-
-</div>
-
-<hr>
-
-</body>
 {% endblock %}
 
 {% block javascript %}
-  <script>
+<script>
 
 
   var stars = document.getElementsByClassName('stars');
   var book_id = document.getElementById("book_id").getAttribute("book_id");
 
-  stars[0].addEventListener('click',function () { //because of rotating 180 so 5 stars means id 0
-      var stars=5
-      console.log("no stars= "+stars)
-      var bookID=book_id
-      console.log("book id= "+bookID)
-      $.ajax({
-            url: '{% url "rateList" %}',
-            data: {
-              'stars': stars,
-              'bookID':bookID
-            },
-            dataType: 'json',
-            success: function (data) {
-              if (data.rateStatus== 1) {
-                alert("Thank you for rating '" +data.bookTitle+ "'\nYour rate saved.");
-              }
-              else if(data.rateStatus== 0){
-                alert("You already rated this book '" +data.bookTitle+ "'\nWe updated your rate.");
-              }
+  stars[0].addEventListener('click', function () { //because of rotating 180 so 5 stars means id 0
+    var stars = 5
+    console.log("no stars= " + stars)
+    var bookID = book_id
+    console.log("book id= " + bookID)
+    $.ajax({
+      url: '{% url "rateList" %}',
+      data: {
+        'stars': stars,
+        'bookID': bookID
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.rateStatus == 1) {
+          alert("Thank you for rating '" + data.bookTitle + "'\nYour rate saved.");
+        }
+        else if (data.rateStatus == 0) {
+          alert("You already rated this book '" + data.bookTitle + "'\nWe updated your rate.");
+        }
 
-            }
-             });
+      }
+    });
   });
 
-  stars[1].addEventListener('click',function () { //because of rotating 180 so 4 stars means id 1
-        var stars=4
-        console.log("no stars= "+stars)
-        var bookID=book_id
-        console.log("book id= "+bookID)
-        $.ajax({
-              url: '{% url "rateList" %}',
-              data: {
-                'stars': stars,
-                'bookID':bookID
-              },
-              dataType: 'json',
-              success: function (data) {
-                if (data.rateStatus== 1) {
-                  alert("Thank you for rating '" +data.bookTitle+ "'\nYour rate saved.");
-                }
-                else if(data.rateStatus== 0){
-                  alert("You already rated this book '" +data.bookTitle+ "'\nWe updated your rate.");
-                }
+  stars[1].addEventListener('click', function () { //because of rotating 180 so 4 stars means id 1
+    var stars = 4
+    console.log("no stars= " + stars)
+    var bookID = book_id
+    console.log("book id= " + bookID)
+    $.ajax({
+      url: '{% url "rateList" %}',
+      data: {
+        'stars': stars,
+        'bookID': bookID
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.rateStatus == 1) {
+          alert("Thank you for rating '" + data.bookTitle + "'\nYour rate saved.");
+        }
+        else if (data.rateStatus == 0) {
+          alert("You already rated this book '" + data.bookTitle + "'\nWe updated your rate.");
+        }
 
-              }
-               });
+      }
     });
+  });
 
-  stars[2].addEventListener('click',function () { //because of rotating 180 so 3 stars means id 2
-            var stars=3
-            console.log("no stars= "+stars)
-            var bookID=book_id
-            console.log("book id= "+bookID)
-            $.ajax({
-                  url: '{% url "rateList" %}',
-                  data: {
-                    'stars': stars,
-                    'bookID':bookID
-                  },
-                  dataType: 'json',
-                  success: function (data) {
-                    if (data.rateStatus== 1) {
-                      alert("Thank you for rating '" +data.bookTitle+ "'\nYour rate saved.");
-                    }
-                    else if(data.rateStatus== 0){
-                      alert("You already rated this book '" +data.bookTitle+ "'\nWe updated your rate.");
-                    }
+  stars[2].addEventListener('click', function () { //because of rotating 180 so 3 stars means id 2
+    var stars = 3
+    console.log("no stars= " + stars)
+    var bookID = book_id
+    console.log("book id= " + bookID)
+    $.ajax({
+      url: '{% url "rateList" %}',
+      data: {
+        'stars': stars,
+        'bookID': bookID
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.rateStatus == 1) {
+          alert("Thank you for rating '" + data.bookTitle + "'\nYour rate saved.");
+        }
+        else if (data.rateStatus == 0) {
+          alert("You already rated this book '" + data.bookTitle + "'\nWe updated your rate.");
+        }
 
-                  }
-                   });
-        });
+      }
+    });
+  });
 
-  stars[3].addEventListener('click',function () { //because of rotating 180 so 2 stars means id 3
-                var stars=2
-                console.log("no stars= "+stars)
-                var bookID=book_id
-                console.log("book id= "+bookID)
-                $.ajax({
-                      url: '{% url "rateList" %}',
-                      data: {
-                        'stars': stars,
-                        'bookID':bookID
-                      },
-                      dataType: 'json',
-                      success: function (data) {
-                        if (data.rateStatus== 1) {
-                          alert("Thank you for rating '" +data.bookTitle+ "'\nYour rate saved.");
-                        }
-                        else if(data.rateStatus== 0){
-                          alert("You already rated this book '" +data.bookTitle+ "'\nWe updated your rate.");
-                        }
+  stars[3].addEventListener('click', function () { //because of rotating 180 so 2 stars means id 3
+    var stars = 2
+    console.log("no stars= " + stars)
+    var bookID = book_id
+    console.log("book id= " + bookID)
+    $.ajax({
+      url: '{% url "rateList" %}',
+      data: {
+        'stars': stars,
+        'bookID': bookID
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.rateStatus == 1) {
+          alert("Thank you for rating '" + data.bookTitle + "'\nYour rate saved.");
+        }
+        else if (data.rateStatus == 0) {
+          alert("You already rated this book '" + data.bookTitle + "'\nWe updated your rate.");
+        }
 
-                      }
-                       });
-            });
+      }
+    });
+  });
 
-  stars[4].addEventListener('click',function () { //because of rotating 180 so 1 stars means id 4
-                    var stars=1
-                    console.log("no stars= "+stars)
-                    var bookID=book_id
-                    console.log("book id= "+bookID)
-                    $.ajax({
-                          url: '{% url "rateList" %}',
-                          data: {
-                            'stars': stars,
-                            'bookID':bookID
-                          },
-                          dataType: 'json',
-                          success: function (data) {
-                            if (data.rateStatus== 1) {
-                              alert("Thank you for rating '" +data.bookTitle+ "'\nYour rate saved.");
-                            }
-                            else if(data.rateStatus== 0){
-                              alert("You already rated this book '" +data.bookTitle+ "'\nWe updated your rate.");
-                            }
+  stars[4].addEventListener('click', function () { //because of rotating 180 so 1 stars means id 4
+    var stars = 1
+    console.log("no stars= " + stars)
+    var bookID = book_id
+    console.log("book id= " + bookID)
+    $.ajax({
+      url: '{% url "rateList" %}',
+      data: {
+        'stars': stars,
+        'bookID': bookID
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.rateStatus == 1) {
+          alert("Thank you for rating '" + data.bookTitle + "'\nYour rate saved.");
+        }
+        else if (data.rateStatus == 0) {
+          alert("You already rated this book '" + data.bookTitle + "'\nWe updated your rate.");
+        }
 
-                          }
-                           });
-                });
-  </script>
+      }
+    });
+  });
+</script>
 
 {% endblock %}
