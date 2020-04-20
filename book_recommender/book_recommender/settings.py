@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 
 MESSAGE_LEVEL = 30
 
+MODELS = os.path.join(BASE_DIR, 'Predictor\\models')
+
+
 # Application definition
 
 INSTALLED_APPS = [

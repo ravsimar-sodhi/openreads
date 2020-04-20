@@ -11,6 +11,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from Users.models import *
 from UserGroups.models import *
 from django.contrib import messages
+from Predictor.recom import *
 
 def register(request):
     print("222")
@@ -102,9 +103,21 @@ def myShelf(request, sid):
     else:
         shelf = shelf[0]
     shelfBooks = shelf.book.all()
+
+    otherBooks = list()
     books = Book.objects.all()
-    otherBooks=list(set(books).difference(set(shelfBooks)))
-    otherBooks = otherBooks[0:min(5,len(otherBooks))]
+    for book in shelfBooks:
+        recomBooks = recommendations(book.book_title)
+        for book1 in books:
+            if book1.book_title in recomBooks:
+                otherBooks.append(book1)
+                recomBooks.remove(book1.book_title)
+    otherBooks = list(set(otherBooks))
+    
+
+    # books = Book.objects.all()
+    # otherBooks=list(set(books).difference(set(shelfBooks)))
+    # otherBooks = otherBooks[0:min(5,len(otherBooks))]
     return render(request, './users/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks})
 
 @login_required

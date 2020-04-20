@@ -11,6 +11,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from UserGroups.models import *
 from Users.models import *
 from Books.models import *
+from Predictor.recom import *
 
 def create(request):
     if request.method == 'POST':
@@ -100,9 +101,20 @@ def myShelf(request, sid):
         member = True
 
     shelfBooks = shelf.book.all()
+    otherBooks = list()
     books = Book.objects.all()
-    otherBooks=list(set(books).difference(set(shelfBooks)))
-    otherBooks = otherBooks[0:min(5,len(otherBooks))]
+    for book in shelfBooks:
+        recomBooks = recommendations(book.book_title)
+        for book1 in books:
+            if book1.book_title in recomBooks:
+                otherBooks.append(book1)
+                recomBooks.remove(book1.book_title)
+    otherBooks = list(set(otherBooks))  
+  
+    # shelfBooks = shelf.book.all()
+    # books = Book.objects.all()
+    # otherBooks=list(set(books).difference(set(shelfBooks)))
+    # otherBooks = otherBooks[0:min(5,len(otherBooks))]
     return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks,'member':member})
 
 @login_required
