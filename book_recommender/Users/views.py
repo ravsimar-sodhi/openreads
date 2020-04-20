@@ -31,6 +31,8 @@ def view_profile(request, args = None, error = None):
     userName = {'user':request.user}
     UserRateList=rateList.objects.filter(user=request.user)
     print (UserRateList)
+    if len(UserRateList)>5:
+        UserRateList=UserRateList[len(UserRateList)-5:]
     # myGroups = None
     # otherGroups = None
     myGroups = request.user.my_groups.all()
