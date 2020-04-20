@@ -1,9 +1,9 @@
 import pandas as pd
 import pickle
-f=open("reco_model_cosine.pkl","rb")
+f=open("reco_model_cosine_small.pkl","rb")
 cosine_sim=pickle.load(f)
 f.close()
-f=open("reco_model_indices.pkl","rb")
+f=open("reco_model_indices_small.pkl","rb")
 indices=pickle.load(f)
 f.close()
 df6=pd.read_csv("reco_df.csv",index_col="book_title")
