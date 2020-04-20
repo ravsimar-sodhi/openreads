@@ -110,11 +110,13 @@ def myShelf(request, sid):
                 otherBooks.append(book1)
                 recomBooks.remove(book1.book_title)
     otherBooks = list(set(otherBooks))  
-  
+    if len(otherBooks) == 0:
+        otherBooks=list(set(books).difference(set(shelfBooks)))
+        otherBooks = otherBooks[0:min(10,len(otherBooks))]
+
     # shelfBooks = shelf.book.all()
     # books = Book.objects.all()
-    # otherBooks=list(set(books).difference(set(shelfBooks)))
-    # otherBooks = otherBooks[0:min(5,len(otherBooks))]
+    
     return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks,'member':member})
 
 @login_required
