@@ -1,45 +1,37 @@
-<body style="background-image: url('/media/4.jpeg') ; background-size: 100%; ">
-    {% extends "base.html" %}
-    {% load poll_extras %}
-    {% block content %}
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
 
-        <hr>
-        <hr>
-        {% for key,value in finalBooksDict.items %}
-        {% if value %}
-        <div class="row" style="padding:10px;text-align:center;">
-            {% with genre=key %}
+    {% for key,value in finalBooksDict.items %}
+    {% if value %}
+        {% with genre=key %}
 
-            <div style="text-align:center" style="width:10px"><h6><font size="5"><strong>{{genre.name}}</strong></font></h6></div>
+        <h2>
+            {{genre.name}}
+        </h2>
 
-            {% endwith %}
-        </div>
-        <div class="row" style="padding:10px;text-align:center;">
+        {% endwith %}
+    <div class="row" style="padding:10px;text-align:center;">
         {% for book in value %}
-        <div style="width:200px;float:left;padding:20px;">
-            <a href ="/books/{{ book.id }}/" >
-            <div class="box" style="text-align: center;margin:0 auto;">
-                 <img class="card-img-top" src="{{ book.book_cover }}" alt=""><br>
-                 <font style="color: #0c644e;font-size:20 ;font-family: 'Monospace';">{{ book.book_title }}</font>
-                </div>
+        <div class="card" style="width: 200px;padding:2px;margin:10px;">
+            <a href="/books/{{ book.id }}/">
+                <img class="card-img-top" src="{{ book.book_cover }}" alt="" style="width:100%;"><br>
             </a>
+            <div class="card-body" style="text-align: center;margin:0 auto;">
+                <a href="/books/{{ book.id }}/">
+                    <h6 class="card-title text-dark">
+                        {{ book.book_title }}
+                    </h6>
+                </a>
+                <h7><i>{{book.book_author}}</i> </h7>
             </div>
-            {% endfor %}
-            </div>
-
-        {% endif %}
-
-
+        </div>
         {% endfor %}
+    </div>
 
-      </body>
-    {% endblock %}
-    <!-- {% block javascript %}
-      <script>
-      var maxBooksBTN=document.getElementById('maxBooks');
-      maxBooksBTN.addEventListener('onchange',function () {
-          console.log("zzzzzzzzzzzzz")
+    {% endif %}
 
-      });
-      </script>
-      {% endblock %} -->
+
+    {% endfor %}
+</div>
+{% endblock %}
