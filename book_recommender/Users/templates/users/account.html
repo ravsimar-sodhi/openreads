@@ -5,42 +5,44 @@
 <br>
 <div class='container'>
     <div class="row">
-        <div class="col-4" >
+        <div class="col-4">
             <div class="container">
                 <h2>Recently rated books:</h2><br>
 
                 {% for rate in UserRateList %}
 
-                    <div class="card border-secondary" style="width:95%;">
-                        <div class="row no-gutters">
-                            <div class="col-auto">
-                                <a href="/books/{{rate.book.id}}">
-                                    <img src="{{rate.book.book_cover}}" class="img-fluid" alt="{{rate.book}}"
+                <div class="card border-secondary">
+                    <div class="row no-gutters">
+                        <div class="col-auto">
+                            <a href="/books/{{rate.book.id}}">
+                                <img src="{{rate.book.book_cover}}" class="img-fluid" alt="{{rate.book}}"
                                     style="width:100px;">
-                                </a>
-                            </div>
-                            <div class="col">
-                                <div class="card-block px-2">
-                                <h5 class="card-title" style="display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            </a>
+                        </div>
+                        <div class="col">
+                            <div class="card-block px-2">
+                                <h5 class="card-title"
+                                    style="display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
                                     <a href="/books/{{rate.book.id}}">
                                         {{rate.book}}
-                                        </a>
+                                    </a>
                                 </h5>
                                 <p class="card-text">By {{rate.book.book_author }}</p>
-                                <span class="text-muted" style="font-size: x-small; display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{rate.book.book_description}}</span>
+                                <span class="text-muted"
+                                    style="font-size: x-small; display: block; width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{rate.book.book_description}}</span>
                             </div>
                         </div>
                         <div class="card-footer w-100 text-muted">
-                        {% with stars=rate.rate %}
-                        {% for i in stars|times %}
+                            {% with stars=rate.rate %}
+                            {% for i in stars|times %}
                             <span class="fa fa-star checked" style="color: gold;"></span>
-                        {% endfor %}
-                        {% with j=stars|negate|add:5 %}
-                        {% for i in j|times %}
+                            {% endfor %}
+                            {% with j=stars|negate|add:5 %}
+                            {% for i in j|times %}
                             <span class="fa fa-star"></span>
-                        {% endfor %}
-                        {% endwith %}
-                        {% endwith %}
+                            {% endfor %}
+                            {% endwith %}
+                            {% endwith %}
 
                         </div>
                     </div>
@@ -50,58 +52,48 @@
             </div>
             <br><br>
         </div>
-        <div class="col-6">
-            <h2> Bookshelves</h2>
-            <div class="middle-element scrollable" style="height:80%;">
-                <div class="scrollable" style="max-height: 50%;">
-                    <div class="class1" style="width:100%;height:80px">
-                        <form action='/user/createShelf/' method="post"
-                            style="color:rgb(17, 160, 226);margin-left:60px;margin-top:10px;" class="col-md-4">
-                            {% for field in form %}
-                            {% csrf_token %}
-                            <div
-                                style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+        <div class="col-5">
+            <div class="row" style="padding:5px;">
+                <h2> My Bookshelves</h2>
+            </div>
+            <br>
+            <div class="row">
+                <form action='/user/createShelf/' method="post" class="form-inline">
+                    {% for field in form %}
+                    {% csrf_token %}
+                    <div class="input-group">
 
-                                <h4 style="white-space: nowrap;margin-left: 200px;">{{ field.label_tag}}</h4>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<p style="color:rgb(24, 1, 1);">{{field}}</p>
+                        <p style="margin-right:10px;"> <b>
+                            {{ field.label_tag}}</p>
+                        </b>
+                        <p>{{field}}</p>
 
-                                {% endfor %}&nbsp;&nbsp;&nbsp;
-                                <div style="padding:0;">
-                                    <button type="submit"
-                                        style="white-space: nowrap;background-color:rgb(245, 231, 231);color:rgb(39, 5, 192);width:200px;height:40px;"><i
-                                            class="fa fa-plus-square"> New BookShelf</i></button>
-                                </div>
-                            </div>
-                            <div style="white-space: nowrap;">{{ form.name.errors }}</div>
-                        </form>
-
+                        {% endfor %}
+                        <div style="margin-left: 5px;">
+                            <button type="button" class="btn btn-outline-info btn-sm"><i class="fa fa-plus-square">
+                                    Add</i></button>
+                        </div>
                     </div>
-                </div>
+                    <div style="white-space: nowrap;">{{ form.name.errors }}</div>
+                </form>
 
-                <a href="/user/shelves">
-                    <div class="class1" style="width:100%;height:50px; text-align: center;">
-                        <h1 style="font-size: 30px; color: #2b5b81;">My Bookshelves</h1>
+            </div>
+
+            <div class="bg-white scrollable rounded" style="max-height:300px;">
+                {% for shelf in shelves %}
+                <a href="/user/{{ shelf.id }}/shelf">
+                    <div class="border" style="text-align: center; border-width:3px; padding:10px">
+                        <h3 style="padding:0;">{{ shelf.name }}</h3>
                     </div>
                 </a>
-                <div class="scrollable" style="max-height:300px;">
-                    {% for shelf in shelves %}
-                    <a href="/user/{{ shelf.id }}/shelf">
-                        <div class="class1" style="width:100%;height:50px;text-align: center;">
-                            <h3 style="padding:0;">{{ shelf.name }}</h3>
-                        </div>
-                    </a>
-                    {% endfor %}
+                {% endfor %}
 
-                </div>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-3" style="width: 100%; padding: 3px;">
             {% if myGroups or otherGroups %}
-            <div class="right-element">
-
-                <div class="class1" style="height:50px;">
-                    <h3>Your groups</h3>
-                </div>
+            <div>
+                    <h3>Joined Groups</h3>
                 <div class="scrollable" style="max-height: 50%;">
                     {% for group in myGroups %}
                     <ul class="class1"
@@ -123,9 +115,7 @@
                 </div>
                 </br>
 
-                <div class="class1" style="height:50px;">
-                    <h3>All other groups</h3>
-                </div>
+                <h3>Other groups</h3>
                 <div class="scrollable" style="max-height: 50%;">
                     {% for group in otherGroups %}
                     <ul class="class1"

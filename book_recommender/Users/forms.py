@@ -10,10 +10,10 @@ class AddShelfForm(forms.Form):
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
          super(AddShelfForm, self).__init__(*args, **kwargs)
-    name = forms.CharField(label="Shelf Name",min_length=4, max_length=256)
+    name = forms.CharField(label="Add Shelf",min_length=4, max_length=256, widget=forms.TextInput(attrs={'placeholder': 'Shelf Name'}))
     class Meta:
         model = Bookshelf
-        
+
         fields = (
             'name'
         )
@@ -26,7 +26,7 @@ class AddShelfForm(forms.Form):
             return name
         print(name)
         raise forms.ValidationError('Shelf %s already exists'%name)
-    
+
     def save(self, commit=True):
         # user = super(RegistrationForm, self).save(commit=False)
         # user.first_name = self.cleaned_data['first_name']
@@ -37,7 +37,7 @@ class AddShelfForm(forms.Form):
             shelf = Bookshelf.objects.create(
             name = self.cleaned_data['name'],
             user = self.user
-            
+
         )
 
 
@@ -64,7 +64,7 @@ class RegistrationForm(forms.Form):
 
 
         )
-        
+
     def clean_username(self):
         username = self.cleaned_data['username']
         try:
@@ -102,7 +102,7 @@ class RegistrationForm(forms.Form):
             self.cleaned_data['password1'],
             first_name = self.cleaned_data['first_name'],
             last_name = self.cleaned_data['last_name']
-            
+
         )
 
         return user
