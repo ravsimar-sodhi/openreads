@@ -128,6 +128,8 @@ def addBookToShelf(request, sid, bid):
     shelf = Bookshelf.objects.filter(id = sid)[0]
     book = Book.objects.filter(id = bid)[0]
     shelf.book.add(book)
+    messages.success(request, 'Book \"%s\" added to shelf \"%s\" ' %(book.book_title,shelf.name))
+    print('dsfasdf')
     return redirect("/user/"+str(sid)+"/shelf/")
 
 @login_required
@@ -137,9 +139,9 @@ def removeBookFromShelf(request, sid, bid):
     book = Book.objects.get(id = bid)
     print("111")
     print(sid)
-    if shelf.book.remove(book):
-        print("Book in shelf, removing...")
+    if book in shelf.book.all():
+        shelf.book.remove(book)
+        messages.success(request, 'Book \"%s\" removed from shelf \"%s\" ' %(book.book_title,shelf.name))
     else:
-        print("Book not in shelf!")
-        # TODO: give alert/message
+        messages.error(request, 'Book \"%s\" not in shelf \"%s\" !' %(book.book_title,shelf.name))
     return redirect("/user/"+str(sid)+"/shelf/")

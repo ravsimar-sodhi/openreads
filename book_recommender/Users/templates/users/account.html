@@ -57,7 +57,7 @@
                 <h2> My Bookshelves</h2>
             </div>
             <br>
-            <div class="row">
+            <div class="row justify-content-center">
                 <form action='/user/createShelf/' method="post" class="form-inline">
                     {% for field in form %}
                     {% csrf_token %}

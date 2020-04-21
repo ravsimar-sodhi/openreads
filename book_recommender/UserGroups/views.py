@@ -4,10 +4,12 @@ from django.shortcuts import render
 #from django.contrib.auth.models import User,Book, Author
 from django.shortcuts import render,redirect
 from UserGroups.forms import *
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib import messages
 from UserGroups.models import *
 from Users.models import *
 from Books.models import *
@@ -18,6 +20,7 @@ def create(request):
         form = GroupCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save(request)
+            messages.success(request, "Group creation successful!")
             return redirect('/books')
     else:
         form = GroupCreationForm()
@@ -25,14 +28,22 @@ def create(request):
     return render(request, 'groups/group_creation.html', args)
 
 def join_group(request, id):
-    print("ok")
+    group = UserGroup.objects.get(id=id)
     if request.method == 'POST':
-        print("yo")
-        print(id)
-        group = UserGroup.objects.get(id=id)
         group.group_members.add(request.user)
+        messages.success(request, "Successfully joined group \"%s\" !"%(group))
+    return redirect('/group/'+ str(group.id))
 
-    return redirect('/')
+def leave_group(request, id):
+    group = UserGroup.objects.get(id = id)
+    if request.method == "POST":
+        user = User.objects.get(id = request.user.id)
+        if user in group.group_members.all():
+            group.group_members.remove(user)
+            messages.success(request, "Successfully left group \"%s\" !" %(group))
+        else:
+            messages.error(request, "Error leaving group")
+    return redirect('/group/' + str(group.id))
 
 def write_message(request, id):
     if request.method == 'POST':
@@ -99,7 +110,20 @@ def details(request, id, argsDict = None):
 @login_required
 def addShelf(request):
     if request.method == 'POST':
-        form = AddGroupShelfForm(request.POST,request.POST.get('group'))
+        gid = request.POST.get('group')
+        uid = request.user.id
+        form = AddGroupShelfForm(request.POST, gid)
+        try:
+            group = UserGroup.objects.get(id=gid)
+        except ObjectDoesNotExist:
+            messages.error(request, "Group does not exist")
+            return details(request, gid)
+
+        user = User.objects.get(id = uid)
+        if user not in group.group_members.all():
+            messages.error(request, "You are not a member of this group")
+            return details(request, gid)
+
         if form.is_valid():
             form.save()
             return redirect('/group/'+str(request.POST.get('group')))
@@ -125,6 +149,9 @@ def myShelf(request, sid):
     if request.user in group_members:
         member = True
 
+    if member is False:
+        return render(request, './groups/shelf.html',{'shelf':shelf, 'member':member})
+
     shelfBooks = shelf.book.all()
     otherBooks = list()
     books = Book.objects.all()
@@ -134,32 +161,37 @@ def myShelf(request, sid):
             if book1.book_title in recomBooks:
                 otherBooks.append(book1)
                 recomBooks.remove(book1.book_title)
-    otherBooks = list(set(otherBooks))  
+    otherBooks = list(set(otherBooks))
     if len(otherBooks) == 0:
         otherBooks=list(set(books).difference(set(shelfBooks)))
         otherBooks = otherBooks[0:min(10,len(otherBooks))]
 
-    # shelfBooks = shelf.book.all()
-    # books = Book.objects.all()
-    
-    return render(request, './groups/shelf.html',{'shelf':shelf, 'otherBooks':otherBooks,'member':member})
+
+    return render(request, './groups/shelf.html',{'group': group,'shelf':shelf, 'otherBooks':otherBooks,'member':member})
 
 @login_required
 def addBookToShelf(request, sid, bid):
-    userid = request.user.id
+    user = User.objects.get(id = request.user.id)
     shelf = Groupshelf.objects.filter(id = sid)[0]
+    group = shelf.group
     book = Book.objects.filter(id = bid)[0]
-    shelf.book.add(book)
+    if user in group.group_members.all():
+        shelf.book.add(book)
+        messages.success(request, 'Book \"%s\" added to shelf \"%s\" ' %(book.book_title,shelf.name))
+    else:
+        messages.error(request, "You do not have permission to perform this action!")
     return redirect("/group/shelf/"+str(shelf.id))
 
 @login_required
 def removeBookFromShelf(request, sid, bid):
-    userid = request.user.id
+    user = User.objects.get(id = request.user.id)
     shelf = Groupshelf.objects.get(id = sid)
+    group = shelf.group
+
     book = Book.objects.get(id = bid)
-    if shelf.book.remove(book):
-        print("Book in shelf, removing...")
+    if book in shelf.book.all() and user in group.group_members.all():
+        shelf.book.remove(book)
+        messages.success(request, 'Book \"%s\" removed from shelf \"%s\" ' %(book.book_title,shelf.name))
     else:
-        print("Book not in shelf!")
-        # TODO: give alert/message
+        messages.error(request,"You do not have permission to perform this action!")
     return redirect("/group/shelf/"+str(shelf.id))
