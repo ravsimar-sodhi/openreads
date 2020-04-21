@@ -76,6 +76,13 @@
             <input type="submit" value="join group" />
         </form>
     </div>
+    {% else %}
+    <div>
+        <form action="/group/{{group.id}}/chat/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Chat" />
+        </form>
+    </div>
     {% endif %}
     {% if myGroups or allGroups %}
     <div class="right-element">

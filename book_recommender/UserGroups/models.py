@@ -10,15 +10,6 @@ def get_image_path(instance, filename):
     return os.path.join('UserGroups/media/', str(instance.id), filename)
 
 # Create your models here.
-class Message(models.Model):
-    message_text = models.CharField(max_length=2000)
-    sender_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    group_id = models.ForeignKey('UserGroups.UserGroup',on_delete=models.CASCADE)
-    sent_on = models.DateTimeField(default=timezone.now)
-
-
-    def __str__(self):
-        return  self.message_text
 
 class UserGroup(models.Model):
     group_name = models.CharField(max_length=200)
@@ -37,6 +28,17 @@ class UserGroup(models.Model):
     # book_author = models.CharField(max_length= 100)
     def __str__(self):
         return self.group_name
+
+class Message(models.Model):
+    message_text = models.CharField(max_length=2000)
+    sender_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    group_id = models.ForeignKey(UserGroup, on_delete=models.CASCADE)
+    sent_on = models.DateTimeField(default=timezone.now)
+
+
+    def __str__(self):
+        return  self.message_text
+
 
 class Groupshelf(models.Model):
   name = models.CharField(max_length=256,blank=False)
