@@ -1,28 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style type="text/css">
-      .bgimg {
-            background-color:rgb(194, 174, 182);
-  height: auto;
-  width: 45%;
-  font-family: 'satisfy';      }
-      </style>
-
-
-  <div class="bgimg">
+  <div class="container">
 
 
 
-      <h1 style= "font-size: 45px; color: #2b5b81; font-family: 'satisfy'">Search results in books:</h1>
-
+      <h1>Search results in books:</h1>
+<br>
        {% if book_list %}
             {% for book in book_list %}
-            <div id = SearchBlock>
-                    <img src = "{{ book.book_cover }}" width="150" height="150">
-                    <a  style= "font-size: 45px; color: #2b5b81;" href = "/books/{{ book.id }}/" > {{book.book_title}} </a>
+            <div class="card border-secondary">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        <a href="/books/{{book.id}}">
+                            <img src="{{book.book_cover}}" class="img-fluid" alt="{{book}}" style="width:150px;">
+                        </a>
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                            <h5 class="card-title">
+                                <a href="/books/{{book.id}}">
+                                    {{book}}
+                                </a>
+                            </h5>
+                            <p class="card-text">By <i>{{book.book_author }}</i></p>
+                            <div class="row">
+                                <h6 class="col-6"> Average Rating: {{book.book_avg_rating}}</h6>
+                                <h6 class="col-6"> No. of Ratings: {{book.book_num_of_ratings}}</h6>
+                            </div>
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="collapse" data-target="#des-{{book.id}}"
+                                aria-expanded="true">
+                                View Description
+                            </button>
+                            <div class="collapse"  id="des-{{book.id}}">
+                                <span class="text-muted"
+                                style="font-size: small">{{book.book_description}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br>
             <br>
             {% endfor %}
       {% else %}

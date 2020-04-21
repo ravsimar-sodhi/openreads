@@ -32,8 +32,8 @@ def details(request,id):
 
 def search(request):
     text_search = request.GET.get("in")
-    book_list = Book.objects.filter(book_title__icontains= text_search)
-    # author=Book.objects.filter(Author_Name__icontains=text_search)
+    book_list = Book.objects.filter(book_title__icontains= text_search) | Book.objects.filter(book_author__icontains = text_search)
+    # author=Book.objects.filter(Author_Name__icontains=text_search)k
     return render(request,'search.html',
     {'book_list':book_list})
 
@@ -46,7 +46,7 @@ def userRateList(request):
     book = Book.objects.get(id=bookID)
     num_of_ratings = book.book_num_of_ratings
     avg_rating = book.book_avg_rating
-    
+
     checkExistedRatings= rateList.objects.filter(user= request.user, book_id = bookID)
     if len(checkExistedRatings)==0:
         rateList.objects.create(user= request.user, book_id = bookID, rate=stars)
@@ -67,7 +67,7 @@ def userRateList(request):
         }
         avg_rating = ((avg_rating*num_of_ratings)-old_rate+int(stars))/(num_of_ratings)
         Book.objects.filter(id=bookID).update(book_avg_rating = avg_rating)
-        
+
         return JsonResponse(data)
 
 
