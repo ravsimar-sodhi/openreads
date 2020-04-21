@@ -1,0 +1,10 @@
+<h1>working</h1>
+{% for message in messages %}
+{{ message.message_text }}
+{% endfor %}
+<form action="/group/{{group.id}}/new_msg/" method="POST">
+	{% csrf_token %}
+	<input type="text" name="content" placeholder="Write a post" />
+    <input type="submit" value="comment" />
+
+</form>

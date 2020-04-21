@@ -29,19 +29,43 @@ def join_group(request, id):
     if request.method == 'POST':
         print("yo")
         print(id)
-        group = UserGroup.objects.filter(id=id).all()[0]
+        group = UserGroup.objects.get(id=id)
         group.group_members.add(request.user)
 
     return redirect('/')
 
+def write_message(request, id):
+    if request.method == 'POST':
+        message_content = request.POST['content']
+        group = UserGroup.objects.get(id=id)
+        message = Message(message_text=message_content, sender_id=request.user, group_id=group)
+        message.save()
+        groupMessages = Message.objects.filter(group_id=group)
+        shelves = Groupshelf.objects.filter(group=group).all()
+        args = {
+                'group': group,
+                'messages': groupMessages,
+               }
+        # display_msgs(request, args)
+        return render(request, 'groups/groupChat.html', args)
+
+def display_msgs(request, id):
+    if request.method == 'POST':
+        group = UserGroup.objects.get(id=id)
+        groupMessages = Message.objects.filter(group_id=group)
+        args = {
+                'group': group,
+                'messages': groupMessages,
+               }
+        return render(request, 'groups/groupChat.html', args)
 
 def details(request, id, argsDict = None):
-    group = UserGroup.objects.filter(id=id).all()[0]
+    group = UserGroup.objects.get(id=id)
     # groupMember = GroupMember.objects.filter(user=request.user,group=group)
     groupMember= group.group_members.all()
     # print(groupMember)
     shelves = Groupshelf.objects.filter(group=group).all()
-    groupMessages = Message.objects.filter(group_id=id)
+    # groupMessages = Message.objects.filter(group=group)
     myGroups = request.user.my_groups.all()
     otherGroups = set(UserGroup.objects.all()).difference(set(myGroups))
     join = True
@@ -51,14 +75,15 @@ def details(request, id, argsDict = None):
         form = argsDict['form']
     else:
         form = AddGroupShelfForm()
-    args = {'groupMembers':groupMember,
+    args = {
+            'groupMembers':groupMember,
             'shelves':shelves,
-                'groupMessages':groupMessages,
-                'myGroups':myGroups,
-                'allGroups':otherGroups,
-                'group':group,
-                'join':join,
-                'form':form}
+            'myGroups':myGroups,
+            'allGroups':otherGroups,
+            'group':group,
+            'join':join,
+            'form':form
+            }
     return render(request, 'groups/groupInfo.html', args)
 
 # def addBookToGroup(request, bid, gid):
