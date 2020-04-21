@@ -108,21 +108,8 @@
         </i>
       </h5>
       <div class="row">
-
-        <div class="col-2">
-
-          <!-- Add avg rating logic from here -->
-          <span></span>
-          <span class="fa fa-star checked" style="color: gold;"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-
-          <!--  to here-->
-        </div>
-        <span class="col-4">Avg Rating: {{book.book_avg_rating}}</span>
-        <span class="col-4"> {{book.book_num_of_ratings}} ratings </span>
+        <span class="col-6">Avg Rating: {{book.book_avg_rating}}</span>
+        <span class="col-6"> {{book.book_num_of_ratings}} ratings </span>
       </div>
       <br>
 
@@ -136,7 +123,7 @@
         </i>
       </div>
       <div class="text-muted">
-        Published at {{ book.published_at }}
+        Published at {{book.book_publisher}} on {{ book.published_at }}
       </div>
     </div>
     <div class="col-1" style="align-content: right;">
