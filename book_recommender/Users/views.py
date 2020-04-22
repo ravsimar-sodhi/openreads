@@ -4,12 +4,14 @@ from django.shortcuts import render
 #from django.contrib.auth.models import User,Book, Author
 from django.shortcuts import render,redirect
 from Users.forms import *
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from Users.models import *
 from UserGroups.models import *
+from UserGroups.forms import *
 from django.contrib import messages
 from Predictor.recom import *
 
@@ -75,22 +77,37 @@ def custom_login(request):
 def addShelf(request):
     if request.method == 'POST':
         form = AddShelfForm(request.POST, user=request.user)
-        print("555")
         if form.is_valid():
-            print("345")
             form.save()
-            return redirect('/user/account/')
+            return redirect('/user/shelves')
     else:
         form = AddShelfForm()
     args = {'form': form}
-    print("111",args)
-    return view_profile(request, args)
+    return redirect('/user/shelves')
+
+def removeShelf(request, sid):
+    user = request.user
+    try:
+        shelf = Bookshelf.objects.get(id = sid, user=user)
+        shelf.delete()
+        messages.success(request, "Shelf Deleted successfully!")
+    except ObjectDoesNotExist:
+        messages.error(request, "Error removing shelf")
+    return redirect('/user/shelves')
 
 @login_required
 def myShelves(request):
+    groupDict = {}
     user = request.user
-    shelves = Bookshelf.objects.filter(user=user).all()
-    return render(request, './users/shelves.html',{'shelves':shelves})
+    usershelves = Bookshelf.objects.filter(user = request.user.id).all()
+    groups = user.my_groups.all()
+    for group in groups:
+        shelves = Groupshelf.objects.filter(group=group)
+        groupDict[group] = shelves
+
+    userForm = AddShelfForm()
+    groupForm = AddGroupShelfForm()
+    return render(request, './users/shelves.html',{'shelves':usershelves, 'groupDict' : groupDict, 'userForm':userForm, 'groupForm': groupForm})
 
 
 @login_required

@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'(?P<id>[0-9]+)/$', views.details, name = "groupDetails"),
     # url(r'(?P<bid>[0-9]+)/(?P<gid>[0-9]+)$', views.addBookToGroup, name = "addBookToGroup"),
     path('createShelf/', views.addShelf, name="createShelf"),
+    path('removeShelf/<int:sid>/<int:gid>', views.removeShelf, name="removeShelf"),
     url(r'shelves/(?P<gid>[0-9]+)$', views.groupShelves, name="groupShelves"),
     url(r'shelf/(?P<sid>[0-9]+)$', views.myShelf, name="groupShelf"),
     url(r'addBookToShelf/(?P<sid>[0-9]+)/(?P<bid>[0-9]+)$', views.addBookToShelf, name = "addBookToGroupShelf"),

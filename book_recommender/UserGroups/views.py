@@ -133,6 +133,20 @@ def addShelf(request):
     print("111",args)
     return details(request,request.POST.get('group'), args)
 
+def removeShelf(request, sid, gid):
+    user = request.user
+    group = UserGroup.objects.get(id=gid)
+    if user not in group.group_members.all():
+        messages.error(request, "You are not a member of this group")
+        return redirect('/group/' + str(gid))
+    try:
+        shelf = Groupshelf.objects.get(id = sid, group=gid)
+        shelf.delete()
+        messages.success(request, "Shelf Deleted successfully!")
+    except ObjectDoesNotExist:
+        messages.error(request, "Error removing shelf")
+    return redirect('/group/' + str(gid))
+
 @login_required
 def groupShelves(request, gid):
     group = UserGroup.objects.filter(id = gid)[0]
