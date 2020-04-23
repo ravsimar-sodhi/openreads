@@ -21,14 +21,13 @@ def details(request,id):
     if book.book_genre:
         for category in book.book_genre.all():
             bookCategories.append(category.name)
-    shelves = Bookshelf.objects.filter(user = request.user)
+    if not request.user.is_authenticated:
+        return render(request,"detail.html", {"book":book, "categories":bookCategories})
     user = User.objects.get(id=request.user.id)
+    shelves = Bookshelf.objects.filter(user = request.user)
     groups = user.my_groups.all()
     groupshelves = Groupshelf.objects.filter(group__in=groups)
-    # TODO: prevent user from adding to groupshelves where he is not member
-    #       maybe restructure code or change from  GET request to POST
-    return render(request,"detail.html",
-    {"book":book, "categories":bookCategories, 'shelves' : shelves, 'groupshelves': groupshelves});
+    return render(request,"detail.html", {"book":book, "categories":bookCategories, 'shelves' : shelves, 'groupshelves': groupshelves})
 
 def search(request):
     text_search = request.GET.get("in")

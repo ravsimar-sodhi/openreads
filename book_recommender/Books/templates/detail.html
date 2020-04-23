@@ -52,6 +52,7 @@
     <div class="col-3">
       <img class="card-img-top" src="{{ book.book_cover }}" alt="" style="width:200px; margin-bottom: 50px;">
 
+      {% if request.user.is_authenticated %}
       <div class="row" style="padding:4px;">
         <p id="book_id" book_id="{{book.id}}" style="display:none">
           <h4><i>Rate:</i></h4>
@@ -93,8 +94,8 @@
 
           </div>
         </div>
-
       </div>
+      {% endif %}
     </div>
 
     <div class="col-8">
