@@ -51,12 +51,15 @@ def leave_group(request, id):
     return redirect('/group/' + str(group.id))
 
 def write_message(request, id):
+    group = UserGroup.objects.get(id=id)
+    if request.user not in group.group_members.all():
+        messages.error(request, "You are not a member of this group!")
+        return redirect('/group/' + str(group.id))
     if request.method == 'POST':
         message_content = request.POST['content']
         if message_content == "" or message_content.isspace():
         	messages.error(request, 'Message can not be empty')
         	return redirect(display_msgs, id=id)
-        group = UserGroup.objects.get(id=id)
         message = Message(message_text=message_content, sender_id=request.user, group_id=group)
         message.save()
         groupMessages = Message.objects.filter(group_id=group)
@@ -69,8 +72,10 @@ def write_message(request, id):
         return redirect(display_msgs, id = id)
 
 def display_msgs(request, id):
-    print(id)
     group = UserGroup.objects.get(id=id)
+    if request.user not in group.group_members.all():
+        messages.error(request, "You are not a member of this group!")
+        return redirect('/group/' + str(group.id))
     groupMessages = Message.objects.filter(group_id=group)
     args = {
             'gid':id,
