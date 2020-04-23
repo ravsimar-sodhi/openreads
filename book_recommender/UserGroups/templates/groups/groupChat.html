@@ -3,12 +3,14 @@
 <div class="container">
 
 	<h1>{{group}} Chat</h1>
-	<div id="chat" style="height: 700px;overflow-y: auto;">Loading..</div>
-	<div class="row justify-content-center">
+	<br>
+	<div class='rounded bg-white' id="chat" style="max-height:500px;overflow-y: auto;">Loading..</div>
+	<br>
+	<div class="row justify-content-center ">
 		<form class="form-inline" action="/group/{{group.id}}/new_msg/" method="POST">
 			{% csrf_token %}
 			<input class="form-control" type="text" name="content" placeholder="Type a message..." />
-			<button class="btn btn-primary" type="submit" style="margin: 5px;">Send</button>
+			<button id='submit' class="btn btn-primary" type="submit" style="margin: 5px;">Send</button>
 		</form>
 	</div>
 </div>
@@ -17,9 +19,14 @@
 {% block javascript %}
 <script type="text/javascript">
 	$(document).ready(function () {
+	scrollToBottom(),
 		viewMsg(),
-			setInterval(viewMsg, 1000);
+			setInterval(viewMsg, 5000);
 	});
+	function scrollToBottom()
+	{
+		$("#chat").stop().animate({ scrollTop: 2000 });
+	};
 
 	function viewMsg() {
 		var gid;
@@ -40,22 +47,23 @@
 							mess += "<div class='row' style='margin:4px;'>"
 							if (message['sender'] == '{{ user.username }}')
 							{
-								mess += "<div class='col-6'></div><div class='col-6' style='text-align:right'>"
+								mess += "<div></div><div class='ml-auto' style='text-align:right'><div class='bg-info text-light rounded p-3'>"
 							}
 							else
 							{
-								mess += "<div class'col-6'></div><div class='col-6'>"
+								mess += "<div class='pr-5'></div><div class='mr-auto'><div class='p-3 bg-dark text-light'>"
 							}
-							mess += "<div>" +message['message_text'] + "</div>"
-							mess +="<div class='text-muted small'>" + message['sender'] + " " + message['time'] + "</div>"
+							mess += message['message_text'] + "</div>"
+							mess +="<div class='text-muted small'>" + message['time'] + "<br>" + message['sender']   + "</div>"
 							mess += "</div>"
 							mess += "</div>"
 
 						}
 					});
 					document.getElementById('chat').innerHTML = mess
-					console.log(mess)
 				}
+			},
+			complete: function(data) {
 			}
 
 		});
