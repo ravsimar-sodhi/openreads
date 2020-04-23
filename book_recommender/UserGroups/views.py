@@ -98,7 +98,7 @@ def get_msgs(request):
                 {
                     'message_text' : message.message_text,
                     'sender':message.sender_id.username,
-                    'time':message.sent_on.strftime("%l:%M, %a, %e %b")
+                    'time':message.sent_on.strftime("%I:%M, %a, %d %b")
                 }
             )
         args = {
