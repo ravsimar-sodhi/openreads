@@ -31,10 +31,9 @@
             </div>
             <br>
             <div>
-                <form action="/group/{{group.id}}/chat/" method="post">
-                    {% csrf_token %}
-                    <input class="btn btn-outline-info" type="submit" value="Chat" />
-                </form>
+                <a href="/group/chat/{{group.id}}/">
+                    <button class="btn btn-outline-info" type="submit" value="Chat">Chat</button>
+                </a>
             </div>
             {% endif %}
             <br>

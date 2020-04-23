@@ -62,18 +62,18 @@ def write_message(request, id):
                 'messages': groupMessages,
                }
         # display_msgs(request, args)
-        return render(request, 'groups/groupChat.html', args)
+        return redirect(display_msgs, id = id)
 
 def display_msgs(request, id):
-    if request.method == 'POST':
-        group = UserGroup.objects.get(id=id)
-        groupMessages = Message.objects.filter(group_id=group)
-        args = {
-                'gid':id,
-                'group': group,
-                'messages': groupMessages,
-               }
-        return render(request, 'groups/groupChat.html', args)
+    print(id)
+    group = UserGroup.objects.get(id=id)
+    groupMessages = Message.objects.filter(group_id=group)
+    args = {
+            'gid':id,
+            'group': group,
+            'messages': groupMessages,
+            }
+    return render(request, 'groups/groupChat.html', args)
 
 @csrf_exempt
 def get_msgs(request):
