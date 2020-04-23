@@ -1,4 +1,59 @@
+{% load static %}
+<html>
+	<body>
 <h1>working</h1>
+<div id="messages"></div>
+<form action="/group/{{group.id}}/new_msg/" method="POST">
+	{% csrf_token %}
+	<input type="text" name="content" placeholder="Write a post" />
+    <input type="submit" value="comment" />
+
+</form>
+<script type="text/javascript" src="{% static 'Books/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		viewMsg(),
+		setInterval(viewMsg, 1000);
+	});
+
+	function viewMsg()
+	{
+	
+		var gid;
+		gid = "{{ group.id }}";
+		
+			$.ajax({
+				type: 'POST',
+				url: "{% url 'get_messages' %}",
+				data: {
+					'gid': gid
+				},
+				success: function(data){
+					if(data.status=='true')
+					{
+						var mess;
+						 data['messages'].forEach(function(message,index){
+							{
+								mess += "<div>"+message['message_text']+" "+message['sender']+" "+message['time']+"</div></br>"
+							}     
+						});
+						document.getElementById('messages').innerHTML = mess
+
+					}
+				}
+				
+			});
+	
+	}
+
+</script>
+
+
+</body>
+</html>
+
+
+<!-- <h1>working</h1>
 {% for message in messages %}
 {{ message.message_text }}
 {% endfor %}
@@ -7,4 +62,4 @@
 	<input type="text" name="content" placeholder="Write a post" />
     <input type="submit" value="comment" />
 
-</form>
+</form> -->

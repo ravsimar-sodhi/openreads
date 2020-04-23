@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 #from django.contrib.auth.models import User,Book, Author
 from django.shortcuts import render,redirect
 from UserGroups.forms import *
@@ -12,6 +14,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from UserGroups.models import *
 from Users.models import *
+from rest_framework.request import Request
+from rest_framework.test import APIRequestFactory
 from Books.models import *
 from Predictor.recom import *
 
@@ -65,10 +69,34 @@ def display_msgs(request, id):
         group = UserGroup.objects.get(id=id)
         groupMessages = Message.objects.filter(group_id=group)
         args = {
+                'gid':id,
                 'group': group,
                 'messages': groupMessages,
                }
         return render(request, 'groups/groupChat.html', args)
+
+@csrf_exempt
+def get_msgs(request):
+    if request.method == 'POST':
+        print(request)
+        gid = request.POST['gid']
+        print(gid)
+        group = UserGroup.objects.get(id=gid)
+        groupMessages = Message.objects.filter(group_id=group)
+        messages = []
+        for message in groupMessages:
+            messages.append(
+                {
+                    'message_text' : message.message_text,
+                    'sender':message.sender_id.username,
+                    'time':message.sent_on
+                }
+            )
+        args = {
+                'status': 'true',
+                'messages': messages
+               }
+        return JsonResponse(args)
 
 def details(request, id, argsDict = None):
     group = UserGroup.objects.get(id=id)

@@ -10,6 +10,7 @@ urlpatterns = [
     path('leave/<int:id>/', views.leave_group, name = 'leave_group'),
     path('<int:id>/chat/', views.display_msgs, name = 'display_msgs'),
     path('<int:id>/new_msg/', views.write_message, name = 'write_messages'),
+    path('/get_msgs/', views.get_msgs, name = 'get_messages'),
     url(r'(?P<id>[0-9]+)/$', views.details, name = "groupDetails"),
     # url(r'(?P<bid>[0-9]+)/(?P<gid>[0-9]+)$', views.addBookToGroup, name = "addBookToGroup"),
     path('createShelf/', views.addShelf, name="createShelf"),
