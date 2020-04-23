@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 #from django.contrib.auth.models import User,Book, Author
 from django.shortcuts import render,redirect
 from UserGroups.forms import *
@@ -52,6 +53,9 @@ def leave_group(request, id):
 def write_message(request, id):
     if request.method == 'POST':
         message_content = request.POST['content']
+        if message_content == "" or message_content.isspace():
+        	messages.error(request, 'Message can not be empty')
+        	return redirect(display_msgs, id=id)
         group = UserGroup.objects.get(id=id)
         message = Message(message_text=message_content, sender_id=request.user, group_id=group)
         message.save()
@@ -59,7 +63,7 @@ def write_message(request, id):
         shelves = Groupshelf.objects.filter(group=group).all()
         args = {
                 'group': group,
-                'messages': groupMessages,
+                'Messages': groupMessages,
                }
         # display_msgs(request, args)
         return redirect(display_msgs, id = id)
