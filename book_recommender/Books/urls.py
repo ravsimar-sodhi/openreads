@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-     path('',login_required(views.allBooks,"books","register"),name="books"),
+     path('', views.allBooks,name="books"),
      re_path(r'(?P<id>[0-9]+)/$', views.details, name = "details"),
 #      re_path(r'(?P<id>[0-9]+)/wishList/$', views.userWishList, name='wishList'),
 #      re_path(r'(?P<id>[0-9]+)/readList/$', views.userReadList, name='readList'),
