@@ -71,7 +71,7 @@ def display_msgs(request, id):
     args = {
             'gid':id,
             'group': group,
-            'messages': groupMessages,
+            'chat': groupMessages,
             }
     return render(request, 'groups/groupChat.html', args)
 
@@ -94,7 +94,7 @@ def get_msgs(request):
             )
         args = {
                 'status': 'true',
-                'messages': messages
+                'chat': messages,
                }
         return JsonResponse(args)
 
@@ -164,7 +164,7 @@ def addShelf(request):
 def removeShelf(request, sid, gid):
     user = request.user
     group = UserGroup.objects.get(id=gid)
-    if user not in group.group_members.all():
+    if user not in group.group_members:
         messages.error(request, "You are not a member of this group")
         return redirect('/group/' + str(gid))
     try:

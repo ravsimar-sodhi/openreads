@@ -1,66 +1,66 @@
-{% load static %}
-<html>
-	<body>
-<h1>working</h1>
-<div id="messages">Loading..</div>
-<form action="/group/{{group.id}}/new_msg/" method="POST">
-	{% csrf_token %}
-	<input type="text" name="content" placeholder="Write a post" />
-    <input type="submit" value="comment" />
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
 
-</form>
-<script type="text/javascript" src="{% static 'Books/jquery-3.3.1.min.js' %}"></script>
+	<h1>{{group}} Chat</h1>
+	<div id="chat" style="height: 700px;overflow-y: auto;">Loading..</div>
+	<div class="row justify-content-center">
+		<form class="form-inline" action="/group/{{group.id}}/new_msg/" method="POST">
+			{% csrf_token %}
+			<input class="form-control" type="text" name="content" placeholder="Type a message..." />
+			<button class="btn btn-primary" type="submit" style="margin: 5px;">Send</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function () {
 		viewMsg(),
-		setInterval(viewMsg, 1000);
+			setInterval(viewMsg, 10000);
 	});
 
-	function viewMsg()
-	{
-	
+	function viewMsg() {
 		var gid;
 		gid = "{{ group.id }}";
-		
-			$.ajax({
-				type: 'POST',
-				url: "{% url 'get_messages' %}",
-				data: {
-					'gid': gid
-				},
-				success: function(data){
-					if(data.status=='true')
-					{
-						var mess;
-						mess ="";
-						 data['messages'].forEach(function(message,index){
-							{
-								mess += "<div>"+message['message_text']+" "+message['sender']+" "+message['time']+"</div></br>"
-							}     
-						});
-						document.getElementById('messages').innerHTML = mess
 
-					}
+		$.ajax({
+			type: 'POST',
+			url: "{% url 'get_messages' %}",
+			data: {
+				'gid': gid
+			},
+			success: function (data) {
+				if (data.status == 'true') {
+					var mess;
+					mess = "";
+					data['chat'].forEach(function (message, index) {
+						{
+							mess += "<div class='row' style='margin:4px;'>"
+							if (message['sender'] == '{{ user.username }}')
+							{
+								mess += "<div class='col-6'></div><div class='col-6' style='text-align:right'>"
+							}
+							else
+							{
+								mess += "<div class'col-6'></div><div class='col-6'>"
+							}
+							mess += "<div>" +message['message_text'] + "</div>"
+							mess +="<div class='text-muted small'>" + message['sender'] + " " + message['time'] + "</div>"
+							mess += "</div>"
+							mess += "</div>"
+
+						}
+					});
+					document.getElementById('chat').innerHTML = mess
+					console.log(mess)
 				}
-				
-			});
-	
+			}
+
+		});
+
 	}
 
 </script>
-
-
-</body>
-</html>
-
-
-<!-- <h1>working</h1>
-{% for message in messages %}
-{{ message.message_text }}
-{% endfor %}
-<form action="/group/{{group.id}}/new_msg/" method="POST">
-	{% csrf_token %}
-	<input type="text" name="content" placeholder="Write a post" />
-    <input type="submit" value="comment" />
-
-</form> -->
+{% endblock %}
