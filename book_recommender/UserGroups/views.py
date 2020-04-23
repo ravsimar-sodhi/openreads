@@ -1,3 +1,5 @@
+# from django.utils import timezone
+from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -60,7 +62,7 @@ def write_message(request, id):
         if message_content == "" or message_content.isspace():
         	messages.error(request, 'Message can not be empty')
         	return redirect(display_msgs, id=id)
-        message = Message(message_text=message_content, sender_id=request.user, group_id=group)
+        message = Message(message_text=message_content, sender_id=request.user, group_id=group, sent_on= datetime.now())
         message.save()
         groupMessages = Message.objects.filter(group_id=group)
         shelves = Groupshelf.objects.filter(group=group).all()
@@ -68,7 +70,6 @@ def write_message(request, id):
                 'group': group,
                 'Messages': groupMessages,
                }
-        # display_msgs(request, args)
         return redirect(display_msgs, id = id)
 
 def display_msgs(request, id):
@@ -87,18 +88,17 @@ def display_msgs(request, id):
 @csrf_exempt
 def get_msgs(request):
     if request.method == 'POST':
-        print(request)
         gid = request.POST['gid']
-        print(gid)
         group = UserGroup.objects.get(id=gid)
         groupMessages = Message.objects.filter(group_id=group)
         messages = []
         for message in groupMessages:
+            # print(message.sent_on.strftime("%z%I:%M %p"))
             messages.append(
                 {
                     'message_text' : message.message_text,
                     'sender':message.sender_id.username,
-                    'time':message.sent_on.strftime("%I:%M, %a, %d %b")
+                    'time':message.sent_on.strftime("%c")
                 }
             )
         args = {
@@ -167,7 +167,6 @@ def addShelf(request):
     else:
         form = AddGroupShelfForm()
     args = {'form': form}
-    print("111",args)
     return details(request,request.POST.get('group'), args)
 
 def removeShelf(request, sid, gid):
