@@ -1,5 +1,6 @@
 from django import forms
 # from Users.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
@@ -22,10 +23,9 @@ class AddShelfForm(forms.Form):
         name = self.cleaned_data['name']
         try:
             shelf = Bookshelf.objects.get(name=name, user=self.user)
-        except Bookshelf.DoesNotExist:
+        except ObjectDoesNotExist:
             return name
-        print(name)
-        raise forms.ValidationError('Shelf %s already exists'%name)
+        raise forms.ValidationError("Shelf \'%s\' already exists!"%(name))
 
     def save(self, commit=True):
         # user = super(RegistrationForm, self).save(commit=False)

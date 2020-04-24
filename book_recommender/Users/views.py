@@ -80,13 +80,10 @@ def addShelf(request):
         if form.is_valid():
             form.save()
             return redirect('/user/shelves')
-        else:
-            messages.error(request, "Error creating shelf!")
-            return redirect('/user/shelves')
     else:
         form = AddShelfForm()
     args = {'form': form}
-    return redirect('/user/shelves')
+    return view_profile(request, args)
 
 def removeShelf(request, sid):
     user = request.user
