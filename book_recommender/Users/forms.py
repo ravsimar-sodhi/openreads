@@ -22,7 +22,7 @@ class AddShelfForm(forms.Form):
     def clean_name(self):
         name = self.cleaned_data['name']
         try:
-            shelf = Bookshelf.objects.get(name=name, user=self.user)
+            shelf = Bookshelf.objects.get(name__iexact=name, user=self.user)
         except ObjectDoesNotExist:
             return name
         raise forms.ValidationError("Shelf \'%s\' already exists!"%(name))
