@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <br>
 <div class="container">
@@ -11,7 +12,7 @@
                 {% if group.group_pic %}
                 <img src="{{ group.group_pic.url }}" style="width:95%;">
                 {% else %}
-                <img src="media/default.jpg" style="width:95%;">
+                <img src="{% static 'UserGroups/group.png' %}" style="width:75%;">
                 {% endif %}
             </div>
             <br>
@@ -116,7 +117,7 @@
                                     {% if group.group_pic %}
                                     <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
-                                    <img src="media/default.jpg" height="30" width="30">
+                                    <img src="{% static 'UserGroups/group.png' %}" height="30" width="30">
                                     {% endif %}{{ group.group_name }}
                                 </li>
                             </a>
@@ -139,7 +140,7 @@
                                     {% if group.group_pic %}
                                     <img src="{{ group.group_pic.url }}" height="30" width="30">
                                     {% else %}
-                                    <img src="media/default.jpg" height="30" width="30">
+                                    <img src="{% static 'UserGroups/group.png' %}" height="30" width="30">
                                     {% endif %}
                                     {{ group.group_name }}
                                 </li>

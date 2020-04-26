@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load poll_extras %}
-
+{% load static %}
 {% block content %}
 <br>
 <div class='container'>
@@ -69,12 +69,13 @@
                         <p>{{field}}</p>
 
                         {% endfor %}
+
                         <div style="margin-left: 5px;">
                             <button type="submit" class="btn btn-outline-info btn-sm"><i class="fa fa-plus-square">
-                                    Add</i></button>
+                                Add</i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div style="white-space: nowrap;">{{ form.name.errors }}</div>
+                        <div class='error-list'>{{ form.name.errors }}</div>
                 </form>
 
             </div>
@@ -104,7 +105,7 @@
                                 {% if group.group_pic %}
                                 <img src="{{ group.group_pic.url }}" height="30" width="30">
                                 {% else %}
-                                <img src="media/default.jpg" height="30" width="30">
+                                <img src="{% static 'UserGroups/group.png' %}" height="30" width="30">
                                 {% endif %}
                                 {{ group.group_name }}
                             </li>
@@ -126,7 +127,7 @@
                                 {% if group.group_pic %}
                                 <img src="{{ group.group_pic.url }}" height="30" width="30">
                                 {% else %}
-                                <img src="media/default.jpg" height="30" width="30">
+                                <img src="{% static 'UserGroups/group.png' %}" height="30" width="30">
                                 {% endif %}
                                 {{ group.group_name }}
                             </li>
